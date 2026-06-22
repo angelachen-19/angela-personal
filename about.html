@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Angela Chen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── DARK MODE (default) ── */
+    :root {
+      --black: #e8e5de;
+      --white: #0d0d0b;
+      --gray-1: #161614;
+      --gray-2: #282724;
+      --gray-3: #c3bfb9;
+      --prose: #c3bfb9;
+      --nav-bg: rgba(13,13,11,0.92);
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    /* ── LIGHT MODE ── */
+    [data-theme="light"] {
+      --black: #0f0f0f;
+      --white: #fafaf8;
+      --gray-1: #f2f1ef;
+      --gray-2: #d4d2ce;
+      --gray-3: #8a887f;
+      --prose: #3a3a3a;
+      --nav-bg: rgba(250,250,248,0.88);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 48px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-color: var(--gray-2); }
+
+    .nav-logo {
+      color: var(--black);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo:hover { opacity: 0.7; }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--gray-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .nav-links a.active { color: var(--black); }
+
+    /* ── PAGE ── */
+    .page-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    /* ── INTRO ── */
+    .intro-section {
+      padding: 140px 0 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      border-bottom: 1px solid var(--gray-2);
+    }
+
+    .intro-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      margin-bottom: 28px;
+    }
+
+    .intro-headline {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    .intro-headline em {
+      font-style: italic;
+      color: var(--gray-3);
+    }
+
+    .intro-body {
+      font-size: 17px;
+      color: var(--prose);
+      line-height: 1.8;
+      max-width: 560px;
+    }
+
+    .intro-body p + p { margin-top: 18px; }
+
+    .intro-body a {
+      color: var(--black);
+      text-underline-offset: 3px;
+    }
+
+    .intro-contact {
+      margin-top: 36px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      border: 1px solid var(--black);
+      padding: 9px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .contact-link:hover { background: var(--black); color: var(--white); }
+
+    .contact-link.secondary {
+      border-color: var(--gray-2);
+      color: var(--gray-3);
+    }
+    .contact-link.secondary:hover { background: var(--gray-1); color: var(--black); border-color: var(--gray-2); }
+
+    /* Photo placeholder */
+    .intro-photo {
+      aspect-ratio: 3 / 4;
+      background: var(--gray-1);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 48px;
+    }
+    .intro-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .intro-photo p { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-3); }
+
+    /* ── EXPERIENCE ── */
+    .exp-section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--gray-2);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      margin-bottom: 48px;
+    }
+
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exp-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 160px;
+      gap: 32px;
+      padding: 24px 0;
+      border-top: 1px solid var(--gray-2);
+      align-items: baseline;
+    }
+    .exp-row:last-child { border-bottom: 1px solid var(--gray-2); }
+
+    .exp-company {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+    }
+
+    .exp-role {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    .exp-role-sub {
+      font-size: 13px;
+      color: var(--gray-3);
+      margin-top: 4px;
+    }
+
+    .exp-date {
+      font-size: 12px;
+      color: var(--gray-3);
+      text-align: right;
+    }
+
+    /* ── THE WAY I THINK ── */
+    .think-section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--gray-2);
+    }
+
+    .think-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px;
+      background: var(--gray-2);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 48px;
+    }
+
+    .think-cell {
+      background: var(--white);
+      padding: 32px 28px;
+    }
+
+    .think-cell-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      margin-bottom: 14px;
+    }
+
+    .think-cell-title {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+
+    .think-cell-desc {
+      font-size: 14px;
+      color: var(--gray-3);
+      line-height: 1.7;
+    }
+
+    .think-prose {
+      margin-top: 48px;
+      font-size: 17px;
+      color: var(--prose);
+      line-height: 1.8;
+      max-width: 640px;
+    }
+    .think-prose p + p { margin-top: 18px; }
+
+    /* ── PRESS & SPEAKING ── */
+    .press-section {
+      padding: 80px 0;
+    }
+
+    .thoughts-list {
+      display: flex;
+      flex-direction: column;
+      margin-top: 48px;
+    }
+
+    .thought-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      padding: 18px 0;
+      border-top: 1px solid var(--gray-2);
+      text-decoration: none;
+      color: var(--black);
+      transition: color 0.2s;
+    }
+    .thought-item:last-child { border-bottom: 1px solid var(--gray-2); }
+    .thought-item:hover { color: var(--gray-3); }
+
+    .thought-title {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .thought-source {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .speaking-note {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 32px;
+      padding: 28px 32px;
+      background: var(--gray-1);
+      border-radius: 12px;
+    }
+
+    .speaking-note p {
+      font-size: 15px;
+      color: var(--gray-3);
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    .btn-secondary {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--black);
+      padding: 11px 24px;
+      border-radius: 100px;
+      border: 1px solid var(--gray-2);
+      text-decoration: none;
+      transition: border-color 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-secondary:hover { border-color: var(--black); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--gray-2);
+    }
+
+    .footer-name { font-size: 13px; color: var(--gray-3); }
+
+    .footer-links { display: flex; gap: 24px; }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--gray-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--black); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; }
+      .nav-links { gap: 20px; }
+      .nav-links li:not(:first-child) { display: none; }
+
+      .page-wrap { padding: 0 24px; }
+      .intro-section { grid-template-columns: 1fr; padding: 120px 0 60px; gap: 40px; }
+      .intro-photo { margin-top: 0; aspect-ratio: 4 / 3; }
+      .exp-row { grid-template-columns: 1fr; gap: 4px; }
+      .exp-date { text-align: left; }
+      .think-grid { grid-template-columns: 1fr; }
+      .speaking-note { flex-direction: column; align-items: flex-start; }
+      footer { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
+    }
+    /* Theme toggle */
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      color: var(--gray-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+      margin-left: 8px;
+    }
+    .theme-toggle:hover { color: var(--black); }
+    .theme-toggle svg { width: 15px; height: 15px; display: block; }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo" aria-label="Home">
+      <svg width="28" height="36" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <path d="M 18 4 C 16 10, 6 30, 2 42" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 18 4 C 20 10, 28 28, 34 42" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M 9 28 Q 18 25 28 28" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+    </a>
+    <div style="display:flex;align-items:center;gap:8px;">
+    <ul class="nav-links">
+      <li><a href="virse.html">Virse</a></li>
+      <li><a href="investing.html">Investing</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="angelaos.html">AngelaOS</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- INTRO -->
+    <div class="intro-section">
+      <div>
+        <p class="intro-label">Angela Chen · New York</p>
+        <h1 class="intro-headline"><em>Hi again —</em><br/>I'm Angela.</h1>
+        <div class="intro-body">
+          <p>Designer-turned founder, AI investor, and pianist. I'm building Virse and in my free time, I invest in early-stage enterprise startups that drive impact with AI.</p>
+          <p>I'm an advocate for AI in design. Previously, I built AI-powered apps and platforms to address health-related problems — including award-winning projects <a href="https://competition.adesignaward.com/gooddesign.php?ID=160334" target="_blank">CalmSpace</a>, <a href="https://thelondondesignawards.com/winner-info.php?id=2190" target="_blank">Argo Data Marketplace</a>, and <a href="https://www.red-dot.org/project/hear-me-ai-based-avatar-assistant-for-people-with-hearing-and-speech-disabilities-71883" target="_blank">HEAR ME AI Avatar Assistant</a>.</p>
+          <p>I speak at universities and design events — including Cornell University and BrainStation. When away from laptop, I study piano at Juilliard, I drink wines (by Adele), and I play golf in summer, ski in winter.</p>
+        </div>
+        <div class="intro-contact">
+          <a href="mailto:angela.design19@gmail.com" class="contact-link">Email me</a>
+          <a href="https://www.linkedin.com/in/anqichen19/" target="_blank" class="contact-link secondary">LinkedIn</a>
+        </div>
+      </div>
+      <div class="intro-photo">
+        <img src="IMG_6361.jpg" alt="Angela Chen" />
+      </div>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="exp-section">
+      <p class="section-label">Experience</p>
+      <div class="exp-list">
+
+        <div class="exp-row">
+          <span class="exp-company">Virse AI</span>
+          <div>
+            <p class="exp-role">Co-founder · CPO · GTM</p>
+            <p class="exp-role-sub">Building AI-native design infrastructure for creative teams</p>
+          </div>
+          <span class="exp-date">May 2025 – Present</span>
+        </div>
+
+        <div class="exp-row">
+          <span class="exp-company">Veritas Technologies</span>
+          <div>
+            <p class="exp-role">UX Designer</p>
+            <p class="exp-role-sub">Backup-based data management solutions</p>
+          </div>
+          <span class="exp-date">Jan 2023 – Dec 2024</span>
+        </div>
+
+        <div class="exp-row">
+          <span class="exp-company">Sumeria Labs</span>
+          <div>
+            <p class="exp-role">Product Designer</p>
+            <p class="exp-role-sub">NFT liquidity protocol and lending</p>
+          </div>
+          <span class="exp-date">Sept 2022 – Jan 2023</span>
+        </div>
+
+        <div class="exp-row">
+          <span class="exp-company">Unchained Technology</span>
+          <div>
+            <p class="exp-role">UX Designer</p>
+            <p class="exp-role-sub">Blockless developer console 1.0 in decentralized networks</p>
+          </div>
+          <span class="exp-date">Jun – Aug 2022</span>
+        </div>
+
+        <div class="exp-row">
+          <span class="exp-company">MITRE</span>
+          <div>
+            <p class="exp-role">UX Designer</p>
+            <p class="exp-role-sub">Argo data marketplace for healthcare · design system 1.0</p>
+          </div>
+          <span class="exp-date">Feb – May 2022</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- THE WAY I THINK -->
+    <div class="think-section">
+      <p class="section-label">The way I think</p>
+
+      <div class="think-grid">
+        <div class="think-cell">
+          <p class="think-cell-label">01</p>
+          <p class="think-cell-title">Product × Design</p>
+          <p class="think-cell-desc">I own both sides. No handoff friction. From user research to shipped interface to success metric.</p>
+        </div>
+        <div class="think-cell">
+          <p class="think-cell-label">02</p>
+          <p class="think-cell-title">AI fluency</p>
+          <p class="think-cell-desc">I've designed AI-native interfaces from scratch — multimodal, context-aware, real-time. Not prompt wrappers. Actual product experiences.</p>
+        </div>
+        <div class="think-cell">
+          <p class="think-cell-label">03</p>
+          <p class="think-cell-title">Founder mode</p>
+          <p class="think-cell-desc">I've led GTM, investor narrative, early community. I know what the first 12 months of building actually feel like.</p>
+        </div>
+      </div>
+
+      <div class="think-prose">
+        <p>Most designers optimize for the screen. I optimize for the decision — what should this product do, for whom, and why now. That combination of craft and strategic thinking is rare, and it's what makes me useful at the earliest stages of company building.</p>
+        <p>I spent years designing at enterprise scale — shipping 20+ workflows used by 87% of the Fortune Global 500 — before going back to zero as a co-founder. That range means I know what "scalable" looks like before you need it.</p>
+      </div>
+    </div>
+
+    <!-- PRESS & SPEAKING -->
+    <div class="press-section">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:48px;">
+        <p class="section-label" style="margin-bottom:0;">Press & speaking</p>
+        <a href="mailto:angela.design19@gmail.com" class="btn-secondary" style="border-color: var(--black);">Say hello</a>
+      </div>
+
+      <div class="thoughts-list">
+        <a href="https://tech.cornell.edu/news/how-angela-chens-award-winning-designs-integrate-ai-and-responsible-design/" target="_blank" class="thought-item">
+          <span class="thought-title">How Angela Chen's Award-Winning Designs Integrate AI and Responsible Design</span>
+          <span class="thought-source">Cornell Tech</span>
+        </a>
+        <a href="https://nyweekly.com/interview/exploring-the-intersection-of-design-and-ai-an-interview-with-ux-designer-anqi-angela-chen/" target="_blank" class="thought-item">
+          <span class="thought-title">Exploring the Intersection of Design and AI — An Interview</span>
+          <span class="thought-source">NY Weekly</span>
+        </a>
+        <a href="https://www.digitaljournal.com/article/ai-meets-healthcare-anqi-chen-angela-chens-award-winning-designs-leading-the-future-of-health-innovation/#ixzz8jZbW9m7x%E2%80%9D" target="_blank" class="thought-item">
+          <span class="thought-title">AI meets healthcare: Award-winning designs leading the future of health innovation</span>
+          <span class="thought-source">Digital Journal</span>
+        </a>
+        <a href="https://apnews.com/press-release/ein-presswire-newsmatics/design-2ba238460612fa3f97af222b7052779c" target="_blank" class="thought-item">
+          <span class="thought-title">CalmSpace Wins Iron A' Design Award in Mobile Technologies</span>
+          <span class="thought-source">AP News</span>
+        </a>
+        <a href="https://artdaily.com/news/169273/Anqi--Angela--Chen--Pioneering-Design-for-Accessible-Digital-Wellness-" target="_blank" class="thought-item">
+          <span class="thought-title">Pioneering Design for Accessible Digital Wellness</span>
+          <span class="thought-source">Art Daily</span>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">© 2026 Angela Chen, inspired by 🎹 and 🍷</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/anqichen19/" target="_blank">LinkedIn</a>
+      <a href="https://x.com/achen0019" target="_blank">X</a>
+      <a href="https://medium.com/@angelachen19" target="_blank">Medium</a>
+      <a href="mailto:angela.design19@gmail.com">Email</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── Theme toggle ──
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    function syncToggleIcon() {
+      const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+      document.getElementById("icon-sun").style.display  = isDark ? "block" : "none";
+      document.getElementById("icon-moon").style.display = isDark ? "none"  : "block";
+    }
+    syncToggleIcon();
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      syncToggleIcon();
+    });
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+</body>
+</html>
