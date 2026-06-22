@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Angela Chen — Designer. Founder. Builder.</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 44'><path d='M 18 4 C 16 10, 6 30, 2 42' stroke='%23e8e5de' stroke-width='2.2' stroke-linecap='round' fill='none'/><path d='M 18 4 C 20 10, 28 28, 34 42' stroke='%23e8e5de' stroke-width='1.1' stroke-linecap='round' fill='none'/><path d='M 9 28 Q 18 25 28 28' stroke='%23e8e5de' stroke-width='1.1' stroke-linecap='round' fill='none'/></svg>" />
   <script>(function(){ document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark'); })();</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -930,10 +931,24 @@
       inset: 0; width: 100%; height: 100%;
       display: block; z-index: 0;
     }
+    /* ── HERO INNER (text + globe row, centered as a unit) ── */
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      width: 100%;
+    }
+
     .hero-content {
-      position: relative; z-index: 2;
-      max-width: 1100px; margin: 0 auto;
-      padding-left: 48px; padding-right: 48px;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      min-width: 0;
     }
     .hero-fade {
       position: absolute;
@@ -946,6 +961,26 @@
     /* light mode fade blends into light page bg */
     [data-theme="light"] .hero-fade {
       background: linear-gradient(to bottom, transparent, var(--white));
+    }
+
+    /* ── HERO GLOBE ── */
+    #hero-globe {
+      flex-shrink: 0;
+      width: min(440px, 34vw);
+      height: min(440px, 34vw);
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1.4s ease 1s;
+    }
+    #hero-globe.globe-ready { opacity: 1; }
+    #hero-globe canvas { display: block; width: 100% !important; height: 100% !important; }
+    @media (max-width: 1000px) { #hero-globe { display: none; } }
+
+    [data-theme="light"] .connect-sub,
+    [data-theme="light"] .connect-card-desc {
+      color: #c3bfb9;
     }
   </style>
 </head>
@@ -983,43 +1018,46 @@
   <!-- HERO -->
   <section id="hero">
     <canvas id="hero-canvas"></canvas>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <!-- Status bar: location + live NYC time -->
+        <div class="hero-status">
+          <span class="status-dot"></span>
+          <span>New York</span>
+          <span class="status-sep">·</span>
+          <span id="nyc-time"></span>
+        </div>
 
-    <div class="hero-content">
-      <!-- Status bar: location + live NYC time -->
-      <div class="hero-status">
-        <span class="status-dot"></span>
-        <span>New York</span>
-        <span class="status-sep">·</span>
-        <span id="nyc-time"></span>
-      </div>
+        <!-- Name + animated role -->
+        <div class="hero-identity">
+          <h1 class="hero-name">Angela Chen</h1>
+          <div class="hero-role-wrap">
+            <span class="hero-role entering" id="heroRole">Founder</span>
+          </div>
+        </div>
 
-      <!-- Name + animated role -->
-      <div class="hero-identity">
-        <h1 class="hero-name">Angela Chen</h1>
-        <div class="hero-role-wrap">
-          <span class="hero-role entering" id="heroRole">Founder</span>
+        <p class="hero-h1">
+          I build products at the intersection of <em>AI and design</em> — from zero.
+        </p>
+        <p class="hero-sub">
+          Designer turned founder and investor. I translate AI capability into real product experiences — and I've done it at every scale, from Fortune 500 enterprise to pre-seed startup.
+        </p>
+        <!-- hero tags hidden
+        <div class="hero-tags">
+          <span class="tag">0 → 1 Product</span>
+          <span class="tag">AI-native Design</span>
+          <span class="tag">Founder Mindset</span>
+          <span class="tag">Design Systems</span>
+          <span class="tag">GTM</span>
+          <span class="tag">Cornell Tech</span>
+        </div>
+        -->
+        <div class="hero-ctas">
+          <a href="#building" class="btn-primary">See what I'm building</a>
         </div>
       </div>
 
-      <p class="hero-h1">
-        I build products at the intersection of <em>AI and design</em> — from zero.
-      </p>
-      <p class="hero-sub">
-        Designer turned founder and investor. I translate AI capability into real product experiences — and I've done it at every scale, from Fortune 500 enterprise to pre-seed startup.
-      </p>
-      <!-- hero tags hidden
-      <div class="hero-tags">
-        <span class="tag">0 → 1 Product</span>
-        <span class="tag">AI-native Design</span>
-        <span class="tag">Founder Mindset</span>
-        <span class="tag">Design Systems</span>
-        <span class="tag">GTM</span>
-        <span class="tag">Cornell Tech</span>
-      </div>
-      -->
-      <div class="hero-ctas">
-        <a href="#building" class="btn-primary">See what I'm building</a>
-      </div>
+      <div id="hero-globe" aria-hidden="true"></div>
     </div>
 
     <div class="hero-fade" aria-hidden="true"></div>
@@ -1278,17 +1316,17 @@
         Building something where design is the product bet?
       </h2>
       <p class="connect-sub">
-        I'm open to selective co-founder, advisor, and early-stage collaboration conversations — especially at the intersection of AI, product, and design.
+        I'm open to advisor, investor and early-stage collaboration conversations — especially at the intersection of AI, product, and design.
       </p>
 
       <div class="connect-options">
         <div class="connect-card">
-          <p class="connect-card-title">VC & Investors</p>
-          <p class="connect-card-desc">Interested in Virse or want to talk about the AI design infrastructure space.</p>
-        </div>
-        <div class="connect-card">
           <p class="connect-card-title">Founders</p>
           <p class="connect-card-desc">Early-stage company where design × AI is a core product lever — not a polish step.</p>
+        </div>
+        <div class="connect-card">
+          <p class="connect-card-title">VC & Investors</p>
+          <p class="connect-card-desc">Want to talk about what you're doing in AI verticals especially healthcare and creativity.</p>
         </div>
         <div class="connect-card">
           <p class="connect-card-title">Media & Speaking</p>
@@ -1386,6 +1424,134 @@
     }, 1800);
   </script>
 
+  <!-- Three.js globe -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+  (function initGlobe() {
+    var container = document.getElementById('hero-globe');
+    if (!container || typeof THREE === 'undefined') return;
+
+    var W = container.offsetWidth  || 440;
+    var H = container.offsetHeight || 440;
+
+    var scene  = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+    camera.position.z = 3.4;
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(W, H);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+
+    // ── Fibonacci sphere (2200 uniform dots) ──
+    var N   = 2200;
+    var pos = new Float32Array(N * 3);
+    var PHI = Math.PI * (3 - Math.sqrt(5));
+    for (var i = 0; i < N; i++) {
+      var y   = 1 - (i / (N - 1)) * 2;
+      var r   = Math.sqrt(Math.max(0, 1 - y * y));
+      var ang = PHI * i;
+      pos[i * 3]     = Math.cos(ang) * r;
+      pos[i * 3 + 1] = y;
+      pos[i * 3 + 2] = Math.sin(ang) * r;
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+    function dotColor() {
+      return document.documentElement.getAttribute('data-theme') === 'light'
+        ? new THREE.Color(0x1a1a18) : new THREE.Color(0xe8e5de);
+    }
+    var mat = new THREE.PointsMaterial({
+      color: dotColor(), size: 0.017, sizeAttenuation: true,
+      transparent: true, opacity: 0.55
+    });
+    var globe = new THREE.Points(geo, mat);
+    scene.add(globe);
+
+    // ── New York marker  (lat 40.71°N, lon 74.01°W) ──
+    var lat = 40.7128 * Math.PI / 180;
+    var lon = -74.006 * Math.PI / 180;
+    var nyX = Math.cos(lat) * Math.sin(lon);   // ≈ -0.727
+    var nyY = Math.sin(lat);                    // ≈  0.653
+    var nyZ = Math.cos(lat) * Math.cos(lon);   // ≈  0.210
+
+    // Amber dot
+    var nyGeo = new THREE.BufferGeometry();
+    nyGeo.setAttribute('position', new THREE.BufferAttribute(
+      new Float32Array([nyX * 1.01, nyY * 1.01, nyZ * 1.01]), 3
+    ));
+    var nyMat = new THREE.PointsMaterial({
+      color: 0xf0c060, size: 0.1, sizeAttenuation: true,
+      transparent: true, opacity: 1
+    });
+    globe.add(new THREE.Points(nyGeo, nyMat));
+
+    // Pulsing sonar rings at NY (two staggered rings)
+    function makeRing(radius) {
+      var pts = [];
+      for (var k = 0; k <= 80; k++) {
+        var a = (k / 80) * Math.PI * 2;
+        pts.push(new THREE.Vector3(Math.cos(a) * radius, Math.sin(a) * radius, 0));
+      }
+      var rg  = new THREE.BufferGeometry().setFromPoints(pts);
+      var rm  = new THREE.LineBasicMaterial({ color: 0xf0c060, transparent: true, opacity: 1 });
+      var rl  = new THREE.LineLoop(rg, rm);
+      rl.quaternion.setFromUnitVectors(
+        new THREE.Vector3(0, 0, 1),
+        new THREE.Vector3(nyX, nyY, nyZ).normalize()
+      );
+      rl.position.set(nyX * 1.01, nyY * 1.01, nyZ * 1.01);
+      globe.add(rl);
+      return { mesh: rl, mat: rm };
+    }
+    var ring1 = makeRing(0.09);
+    var ring2 = makeRing(0.09);
+
+    // ── Mouse parallax ──
+    var targetX = 0, targetY = 0, curX = 0, curY = 0;
+    document.addEventListener('mousemove', function(e) {
+      targetX = (e.clientX / window.innerWidth  - 0.5) *  0.9;
+      targetY = (e.clientY / window.innerHeight - 0.5) * -0.45;
+    });
+
+    // Start with NY roughly facing camera (autoY ≈ 1.28 brings NY to front)
+    var autoY = 1.28;
+    var ringT = 0;
+
+    (function tick() {
+      requestAnimationFrame(tick);
+      autoY += 0.0007;
+      curX += (targetX - curX) * 0.035;
+      curY += (targetY - curY) * 0.035;
+      globe.rotation.y = autoY + curX;
+      globe.rotation.x = curY;
+
+      // Sonar ping — two staggered rings
+      ringT = (ringT + 0.009) % 1;
+      var t1 = ringT;
+      var t2 = (ringT + 0.5) % 1;
+      var s1 = 0.4 + t1 * 3.2; ring1.mesh.scale.set(s1, s1, s1); ring1.mat.opacity = 1.0 * (1 - t1);
+      var s2 = 0.4 + t2 * 3.2; ring2.mesh.scale.set(s2, s2, s2); ring2.mat.opacity = 1.0 * (1 - t2);
+
+      renderer.render(scene, camera);
+    })();
+
+    // Theme observer
+    new MutationObserver(function() {
+      mat.color = dotColor();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Resize
+    window.addEventListener('resize', function() {
+      renderer.setSize(container.offsetWidth, container.offsetHeight);
+    });
+
+    container.classList.add('globe-ready');
+  })();
+  </script>
+
   <!-- Dune Dawn hero animation — dark mode only -->
   <script>
   (function() {
@@ -1451,15 +1617,6 @@
         }
         ctx.fill();
       }
-      // Thin contour line
-      ctx.beginPath();
-      for (let x = 0; x <= W; x += 3) {
-        const y = dnY(x, fy, amp, spd, ph);
-        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      }
-      ctx.strokeStyle = `rgba(${rgb},0.38)`;
-      ctx.lineWidth = 0.7;
-      ctx.stroke();
     }
 
     function draw() {
