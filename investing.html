@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investing — Angela Chen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── DARK MODE (default) ── */
+    :root {
+      --black: #e8e5de;
+      --white: #0d0d0b;
+      --gray-1: #161614;
+      --gray-2: #c3bfb9;
+      --gray-3: #c3bfb9;
+      --prose: #c3bfb9;
+      --nav-bg: rgba(13,13,11,0.92);
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    /* ── LIGHT MODE ── */
+    [data-theme="light"] {
+      --black: #0f0f0f;
+      --white: #fafaf8;
+      --gray-1: #f2f1ef;
+      --gray-2: #d4d2ce;
+      --gray-3: #8a887f;
+      --prose: #3a3a3a;
+      --nav-bg: rgba(250,250,248,0.88);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 48px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-color: var(--gray-2); }
+
+    .nav-logo {
+      color: var(--black);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo:hover { opacity: 0.7; }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--gray-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .nav-links a.active { color: var(--black); }
+
+    .nav-cta {
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: var(--black) !important;
+      border: 1px solid var(--black);
+      padding: 8px 18px;
+      border-radius: 100px;
+      transition: background 0.2s, color 0.2s !important;
+    }
+    .nav-cta:hover {
+      background: var(--black) !important;
+      color: var(--white) !important;
+    }
+
+    /* ── PAGE CONTENT ── */
+    .page-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 140px 48px 100px;
+    }
+
+    /* ── HERO ── */
+    .inv-hero {
+      margin-bottom: 80px;
+      border-bottom: 1px solid var(--gray-2);
+      padding-bottom: 64px;
+    }
+
+    .inv-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      margin-bottom: 28px;
+    }
+
+    .inv-headline {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      max-width: 700px;
+      margin-bottom: 28px;
+    }
+
+    .inv-headline em {
+      font-style: italic;
+      color: var(--gray-3);
+    }
+
+    .inv-sub {
+      font-size: 17px;
+      color: var(--gray-3);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    .inv-contact {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      border: 1px solid var(--black);
+      padding: 10px 22px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .inv-contact:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    /* ── PORTFOLIO ── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: transparent;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 80px;
+    }
+
+    .portfolio-card {
+      background: var(--white);
+      padding: 36px 40px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+    .portfolio-card:hover { background: var(--gray-1); }
+
+    .card-name {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--gray-3);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .card-meta {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray-2);
+      margin-top: 8px;
+    }
+
+    .card-arrow {
+      font-size: 16px;
+      color: var(--gray-2);
+      align-self: flex-end;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .portfolio-card:hover .card-arrow {
+      color: var(--black);
+      transform: translate(3px, -3px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--gray-2);
+    }
+
+    .footer-name {
+      font-size: 13px;
+      color: var(--gray-3);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--gray-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--black); }
+
+    /* ── LIGHT MODE OVERRIDES ── */
+    [data-theme="light"] .card-meta,
+    [data-theme="light"] .card-arrow { color: var(--gray-3); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; }
+      .nav-links { gap: 20px; }
+      .nav-links li:not(:last-child):not(:first-child) { display: none; }
+
+      .page-wrap { padding: 120px 24px 80px; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
+    }
+    /* Theme toggle */
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      color: var(--gray-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+      margin-left: 8px;
+    }
+    .theme-toggle:hover { color: var(--black); }
+    .theme-toggle svg { width: 15px; height: 15px; display: block; }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo" aria-label="Home">
+      <svg width="28" height="36" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <path d="M 18 4 C 16 10, 6 30, 2 42" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 18 4 C 20 10, 28 28, 34 42" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M 9 28 Q 18 25 28 28" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+    </a>
+    <div style="display:flex;align-items:center;gap:8px;">
+    <ul class="nav-links">
+      <li><a href="virse.html">Virse</a></li>
+      <li><a href="investing.html" class="active">Investing</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="angelaos.html">AngelaOS</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- HERO -->
+    <div class="inv-hero">
+      <p class="inv-label">Angela Chen · Investing</p>
+      <h1 class="inv-headline">AI Investing</h1>
+      <p class="inv-sub">Beyond entrepreneurship, I have the mission to advocate design and AI into company's early-stage development. I primarily invest in startups in AI infra and healthcare.</p>
+      <a href="mailto:angela.design19@gmail.com" class="inv-contact">Email me</a>
+    </div>
+
+    <!-- PORTFOLIO -->
+    <div class="portfolio-grid">
+
+      <a href="https://www.grayswan.ai/" target="_blank" class="portfolio-card">
+        <span class="card-name">Grey Swan AI</span>
+        <span class="card-desc">Enterprise Security for AI-Powered Applications</span>
+        <span class="card-meta">Seed+ · Par2 Capital</span>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <a href="https://www.anthropic.com/" target="_blank" class="portfolio-card">
+        <span class="card-name">Anthropic</span>
+        <span class="card-desc">AI research on the safety and alignment of AI systems with human values</span>
+        <span class="card-meta">Series C · AI Fund</span>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <a href="https://www.goodfire.ai/" target="_blank" class="portfolio-card">
+        <span class="card-name">Goodfire</span>
+        <span class="card-desc">AI model interpretability research</span>
+        <span class="card-meta">Seed · AI Fund</span>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <a href="https://www.softmax.com/" target="_blank" class="portfolio-card">
+        <span class="card-name">Softmax</span>
+        <span class="card-desc">AI foundation model scaling organic alignment</span>
+        <span class="card-meta">AI Fund</span>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <a href="https://repromptai.com/" target="_blank" class="portfolio-card">
+        <span class="card-name">Reprompt</span>
+        <span class="card-desc">Geospatial control panel for production AI systems</span>
+        <span class="card-meta">Pre-seed · Y Combinator</span>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <a href="https://piramidal.ai/" target="_blank" class="portfolio-card">
+        <span class="card-name">Piramidal</span>
+        <span class="card-desc">Foundational AI model transforming brain activity into health data to help diagnose diseases</span>
+        <span class="card-meta">Seed · Y Combinator</span>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <a href="https://reconnect-labs.com/" target="_blank" class="portfolio-card">
+        <span class="card-name">Reconnect Labs</span>
+        <span class="card-desc">Biopharmaceutical solutions in psychiatry</span>
+        <span class="card-meta">Series A+</span>
+        <span class="card-arrow">↗</span>
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">© 2026 Angela Chen, inspired by 🎹 and 🍷</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/anqichen19/" target="_blank">LinkedIn</a>
+      <a href="https://x.com/achen0019" target="_blank">X</a>
+      <a href="https://medium.com/@angelachen19" target="_blank">Medium</a>
+      <a href="mailto:angela.design19@gmail.com">Email</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── Theme toggle ──
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    function syncToggleIcon() {
+      const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+      document.getElementById("icon-sun").style.display  = isDark ? "block" : "none";
+      document.getElementById("icon-moon").style.display = isDark ? "none"  : "block";
+    }
+    syncToggleIcon();
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      syncToggleIcon();
+    });
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+</body>
+</html>

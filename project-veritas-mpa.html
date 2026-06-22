@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veritas MPA Enforcement — Angela Chen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── DARK MODE (default) ── */
+    :root {
+      --black: #e8e5de;
+      --white: #0d0d0b;
+      --gray-1: #161614;
+      --gray-2: #282724;
+      --gray-3: #c3bfb9;
+      --prose: #c3bfb9;
+      --nav-bg: rgba(13,13,11,0.92);
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    /* ── LIGHT MODE ── */
+    [data-theme="light"] {
+      --black: #0f0f0f;
+      --white: #fafaf8;
+      --gray-1: #f2f1ef;
+      --gray-2: #d4d2ce;
+      --gray-3: #8a887f;
+      --prose: #3a3a3a;
+      --nav-bg: rgba(250,250,248,0.88);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--white); color: var(--black); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 22px 48px; background: var(--nav-bg); backdrop-filter: blur(12px); border-bottom: 1px solid transparent; transition: border-color 0.3s; }
+    nav.scrolled { border-color: var(--gray-2); }
+    .nav-logo {
+      color: var(--black);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo:hover { opacity: 0.7; }
+    .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+    .nav-links a { font-size: 13px; color: var(--gray-3); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--black); }
+
+    .page-wrap { max-width: 900px; margin: 0 auto; padding: 0 48px; }
+
+    /* HEADER */
+    .proj-header { padding: 140px 0 56px; border-bottom: 1px solid var(--gray-2); }
+    .proj-client { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-3); margin-bottom: 18px; }
+    .proj-title { font-family: var(--serif); font-size: clamp(32px, 5vw, 56px); font-weight: 400; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 28px; }
+    .proj-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+    .meta-group { display: flex; flex-direction: column; gap: 4px; }
+    .meta-key { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-3); }
+    .meta-val { font-size: 14px; color: var(--black); }
+
+    /* OVERVIEW */
+    .proj-overview { padding: 56px 0; border-bottom: 1px solid var(--gray-2); }
+    .proj-overview p { font-size: 17px; color: var(--prose); line-height: 1.8; max-width: 680px; }
+    .proj-overview p + p { margin-top: 20px; }
+
+    /* HERO IMAGE */
+    .proj-hero-img { padding: 56px 0; border-bottom: 1px solid var(--gray-2); }
+    .proj-hero-img img { width: 100%; border-radius: 12px; display: block; }
+
+    /* TAGS */
+    .proj-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; }
+    .proj-tag { font-size: 12px; color: var(--gray-3); border: 1px solid var(--gray-2); padding: 5px 14px; border-radius: 100px; }
+
+    /* NAV PREV/NEXT */
+    .proj-nav { display: flex; justify-content: space-between; padding: 40px 0; }
+    .proj-nav a { font-size: 13px; font-weight: 500; color: var(--gray-3); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 8px; }
+    .proj-nav a:hover { color: var(--black); }
+
+    footer { padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--gray-2); }
+    .footer-name { font-size: 13px; color: var(--gray-3); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--gray-3); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--black); }
+
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; }
+      .nav-links li:not(:first-child) { display: none; }
+      .page-wrap { padding: 0 24px; }
+      .proj-header { padding: 110px 0 40px; }
+      footer { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
+    }
+    /* Theme toggle */
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      color: var(--gray-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+      margin-left: 8px;
+    }
+    .theme-toggle:hover { color: var(--black); }
+    .theme-toggle svg { width: 15px; height: 15px; display: block; }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="index.html" class="nav-logo" aria-label="Home">
+      <svg width="28" height="36" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <path d="M 18 4 C 16 10, 6 30, 2 42" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 18 4 C 20 10, 28 28, 34 42" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M 9 28 Q 18 25 28 28" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+    </a>
+    <div style="display:flex;align-items:center;gap:8px;">
+    <ul class="nav-links">
+      <li><a href="virse.html">Virse</a></li>
+      <li><a href="investing.html">Investing</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="angelaos.html">AngelaOS</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <div class="proj-header">
+      <p class="proj-client">Veritas Technologies</p>
+      <h1 class="proj-title">AI-Assisted Multi-person Authorization Enforcement</h1>
+      <div class="proj-meta">
+        <div class="meta-group">
+          <span class="meta-key">Role</span>
+          <span class="meta-val">Lead UX Designer</span>
+        </div>
+        <div class="meta-group">
+          <span class="meta-key">Timeline</span>
+          <span class="meta-val">May – Nov 2024</span>
+        </div>
+        <div class="meta-group">
+          <span class="meta-key">Status</span>
+          <span class="meta-val">Shipped</span>
+        </div>
+      </div>
+      <div class="proj-tags">
+        <span class="proj-tag">AI</span>
+        <span class="proj-tag">Cybersecurity</span>
+        <span class="proj-tag">B2B Enterprise</span>
+        <span class="proj-tag">Platform Design</span>
+        <span class="proj-tag">Design Systems</span>
+        <span class="proj-tag">0 → 1</span>
+      </div>
+    </div>
+
+    <div class="proj-overview">
+      <p>Veritas' data backup platform serves 87% of the Fortune Global 500. This project introduced Multi-person Authorization (MPA) enforcement — a security layer requiring multiple authorized approvals before sensitive operations execute — alongside an AI Copilot that guides users through complex compliance workflows.</p>
+      <p>I led end-to-end UX: from stakeholder alignment and security-flow mapping, through 40+ screen designs covering the full authorization lifecycle, to handoff and QA with engineering. The result reduced unauthorized change incidents by preventing single-point-of-failure access in high-stakes enterprise environments.</p>
+    </div>
+
+    <div class="proj-hero-img">
+      <video src="Clueso_AI-assisted Copilot Integration.webm" autoplay muted loop playsinline style="width:100%;border-radius:12px;display:block;"></video>
+    </div>
+
+    <div style="padding: 56px 0; border-bottom: 1px solid var(--gray-2);">
+      <p style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray-3);margin-bottom:32px;">Impact</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:32px;">
+        <div style="padding:28px;border:1px solid var(--gray-2);border-radius:12px;">
+          <p style="font-family:var(--serif);font-size:28px;font-weight:400;color:var(--black);margin-bottom:8px;">90%</p>
+          <p style="font-size:14px;color:var(--prose);line-height:1.6;">Improved adoption among Fortune 100 customers</p>
+        </div>
+        <div style="padding:28px;border:1px solid var(--gray-2);border-radius:12px;">
+          <p style="font-family:var(--serif);font-size:28px;font-weight:400;color:var(--black);margin-bottom:8px;">4 Products</p>
+          <p style="font-size:14px;color:var(--prose);line-height:1.6;">Adopting new MPA enforcement workflows to prevent data malware attacks</p>
+        </div>
+        <div style="padding:28px;border:1px solid var(--gray-2);border-radius:12px;">
+          <p style="font-family:var(--serif);font-size:28px;font-weight:400;color:var(--black);margin-bottom:8px;">Top 5</p>
+          <p style="font-size:14px;color:var(--prose);line-height:1.6;">Cybersecurity &amp; recovery solution at Veritas in 2024</p>
+        </div>
+        <div style="padding:28px;border:1px solid var(--gray-2);border-radius:12px;">
+          <p style="font-family:var(--serif);font-size:28px;font-weight:400;color:var(--black);margin-bottom:8px;">AI Advocated</p>
+          <p style="font-size:14px;color:var(--prose);line-height:1.6;">Integration to optimize Veritas' data management experience</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-nav">
+      <a href="index.html#prev-design">← All work</a>
+      <a href="project-veritas-sizing.html">Veritas Sizing Tools →</a>
+    </div>
+
+  </div>
+
+  <footer>
+    <span class="footer-name">© 2026 Angela Chen, inspired by 🎹 and 🍷</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/anqichen19/" target="_blank">LinkedIn</a>
+      <a href="https://x.com/achen0019" target="_blank">X</a>
+      <a href="https://medium.com/@angelachen19" target="_blank">Medium</a>
+      <a href="mailto:angela.design19@gmail.com">Email</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── Theme toggle ──
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    function syncToggleIcon() {
+      const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+      document.getElementById("icon-sun").style.display  = isDark ? "block" : "none";
+      document.getElementById("icon-moon").style.display = isDark ? "none"  : "block";
+    }
+    syncToggleIcon();
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      syncToggleIcon();
+    });
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+  </script>
+</body>
+</html>

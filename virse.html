@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virse AI — AI-native Design Infrastructure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── DARK MODE (default) ── */
+    :root {
+      --black: #e8e5de;
+      --white: #0d0d0b;
+      --gray-1: #161614;
+      --gray-2: #282724;
+      --gray-3: #c3bfb9;
+      --prose: #c3bfb9;
+      --nav-bg: rgba(13,13,11,0.92);
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    /* ── LIGHT MODE ── */
+    [data-theme="light"] {
+      --black: #0f0f0f;
+      --white: #fafaf8;
+      --gray-1: #f2f1ef;
+      --gray-2: #d4d2ce;
+      --gray-3: #8a887f;
+      --prose: #c3bfb9;
+      --nav-bg: rgba(250,250,248,0.88);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 48px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-color: var(--gray-2); }
+
+    /* Logo mark button */
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--black);
+    }
+
+    .nav-logo-mark {
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid var(--black);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      transition: background 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .nav-logo:hover .nav-logo-mark {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .nav-logo-text {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .nav-logo:hover .nav-logo-text { opacity: 1; }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--gray-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .nav-links a.active { color: var(--black); font-weight: 500; }
+
+    .nav-cta {
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: var(--black) !important;
+      border: 1px solid var(--black);
+      padding: 8px 18px;
+      border-radius: 100px;
+      transition: background 0.2s, color 0.2s !important;
+    }
+    .nav-cta:hover {
+      background: var(--black) !important;
+      color: var(--white) !important;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 56px;
+      align-items: center;
+      padding: 140px 48px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HERO VISUAL ── */
+    .hero-visual {
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.6s;
+    }
+
+    .video-frame {
+      border-radius: 14px;
+      border: 1px solid var(--gray-2);
+      overflow: hidden;
+      background: var(--gray-1);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.18);
+    }
+
+    [data-theme="light"] .video-frame {
+      box-shadow: 0 40px 100px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.07);
+    }
+
+    .video-frame-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      background: var(--gray-2);
+      border-bottom: 1px solid var(--gray-2);
+    }
+
+    .frame-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .frame-dot:nth-child(1) { background: #ff5f57; }
+    .frame-dot:nth-child(2) { background: #febc2e; }
+    .frame-dot:nth-child(3) { background: #28c840; }
+
+    .frame-url {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .frame-url span {
+      font-size: 11px;
+      color: var(--gray-3);
+      letter-spacing: 0.03em;
+      background: var(--white);
+      padding: 3px 14px;
+      border-radius: 6px;
+      opacity: 0.7;
+    }
+
+    .hero-video {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.1s;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4caf7d;
+      animation: blink 2.4s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .hero-eyebrow span {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--gray-3);
+    }
+
+    .sep { color: var(--gray-2); }
+
+    .hero-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(44px, 6.5vw, 88px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.3s;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gray-3);
+    }
+
+    .hero-subtitle {
+      font-family: var(--serif);
+      font-size: clamp(20px, 2.8vw, 32px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--gray-3);
+      line-height: 1.3;
+      margin-bottom: 36px;
+      max-width: 720px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.42s;
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      color: #c3bfb9;
+      line-height: 1.8;
+      max-width: 560px;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.54s;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.62s;
+    }
+
+    .meta-pill {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-pill-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+    }
+
+    .meta-pill-value {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.7s;
+    }
+
+    .btn-primary {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      background: var(--black);
+      padding: 13px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.75; }
+
+    .btn-secondary {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--black);
+      padding: 13px 28px;
+      border-radius: 100px;
+      border: 1px solid var(--gray-2);
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--black); }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 100px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      margin-bottom: 40px;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--gray-2);
+    }
+
+    /* ── PROBLEM ── */
+    #problem {
+      border-top: 1px solid var(--gray-2);
+    }
+
+    .problem-headline {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 400;
+      line-height: 1.2;
+      max-width: 680px;
+      margin-bottom: 56px;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px;
+      background: var(--gray-2);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .problem-card {
+      background: var(--white);
+      padding: 36px 32px;
+    }
+
+    .problem-card:first-child { border-radius: 16px 0 0 16px; }
+    .problem-card:last-child { border-radius: 0 16px 16px 0; }
+
+    .problem-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--gray-1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .problem-card-title {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .problem-card-desc {
+      font-size: 14px;
+      color: var(--gray-3);
+      line-height: 1.65;
+    }
+
+    /* ── PRODUCT ── */
+    #product {
+      border-top: 1px solid var(--gray-2);
+    }
+
+    .product-headline {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 400;
+      line-height: 1.2;
+      max-width: 640px;
+      margin-bottom: 16px;
+    }
+
+    .product-sub {
+      font-size: 17px;
+      color: #c3bfb9;
+      max-width: 560px;
+      line-height: 1.8;
+      margin-bottom: 64px;
+    }
+
+    /* ── FEATURE SWITCHER ── */
+    .feature-switcher {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      gap: 64px;
+      align-items: stretch;
+    }
+
+    .feature-tabs {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feature-tab {
+      padding: 28px 0;
+      border-top: 1px solid var(--gray-2);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-tab:last-child {
+      border-bottom: 1px solid var(--gray-2);
+    }
+
+    .feature-tab-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 1px;
+      width: 0%;
+      background: var(--black);
+      transition: width linear;
+    }
+
+    .feature-tab.active .feature-tab-progress {
+      width: 100%;
+    }
+
+    .feature-tab-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+
+    .feature-num {
+      font-family: var(--serif);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--gray-3);
+      letter-spacing: 0.06em;
+      transition: color 0.3s;
+    }
+
+    .feature-tab.active .feature-num { color: var(--black); }
+
+    .feature-title {
+      font-family: var(--serif);
+      font-size: clamp(17px, 2vw, 22px);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--gray-3);
+      transition: color 0.3s;
+    }
+
+    .feature-tab.active .feature-title { color: var(--black); }
+    .feature-tab:hover .feature-title { color: var(--black); }
+
+    .feature-desc {
+      font-size: 13px;
+      color: var(--gray-3);
+      line-height: 1.7;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin-top: 0;
+      transition: max-height 0.4s ease, opacity 0.35s ease, margin-top 0.3s ease;
+    }
+
+    .feature-tab.active .feature-desc {
+      max-height: 120px;
+      opacity: 1;
+      margin-top: 12px;
+    }
+
+    /* Preview panel */
+    .feature-preview-panel {
+      position: sticky;
+      top: 100px;
+      height: calc(100% - 100px);
+      min-height: 320px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .feature-preview-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .feature-preview-slide.active {
+      opacity: 1;
+    }
+
+    .feature-preview-slide video,
+    .feature-preview-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feature-preview-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feature-preview-placeholder p {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #444;
+    }
+
+    /* ── WHY NOW ── */
+    #why {
+      border-top: 1px solid var(--gray-2);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-top: 40px;
+    }
+
+    .why-headline {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.5vw, 44px);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 28px;
+    }
+
+    .why-body {
+      font-size: 17px;
+      line-height: 1.8;
+      color: #c3bfb9;
+    }
+
+    .why-body p + p { margin-top: 20px; }
+
+    .why-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      background: var(--gray-2);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .stat-row {
+      background: var(--white);
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-row:first-child { border-radius: 16px 16px 0 0; }
+    .stat-row:last-child { border-radius: 0 0 16px 16px; }
+
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .stat-desc {
+      font-size: 13px;
+      color: var(--gray-3);
+      line-height: 1.5;
+    }
+
+    /* ── CLIENTS ── */
+    #clients {
+      border-top: 1px solid var(--gray-2);
+    }
+
+    .clients-headline {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.5vw, 44px);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .clients-sub {
+      font-size: 16px;
+      color: #c3bfb9;
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 56px;
+    }
+
+    .clients-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--gray-2);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .client-card {
+      background: var(--white);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background 0.2s;
+    }
+
+    .client-card:hover { background: var(--gray-1); }
+
+    .client-card:nth-child(1) { border-radius: 16px 0 0 0; }
+    .client-card:nth-child(2) { border-radius: 0; }
+    .client-card:nth-child(3) { border-radius: 0 16px 0 0; }
+    .client-card:nth-child(4) { border-radius: 0 0 0 16px; }
+    .client-card:nth-child(5) { border-radius: 0; }
+    .client-card:nth-child(6) { border-radius: 0 0 16px 0; }
+
+    .client-card-top {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .client-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--black);
+      line-height: 1.3;
+    }
+
+    .client-category {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+    }
+
+    .client-desc {
+      font-size: 13px;
+      color: var(--gray-3);
+      line-height: 1.65;
+    }
+
+    @media (max-width: 768px) {
+      .clients-grid { grid-template-columns: 1fr; }
+      .client-card { border-radius: 0 !important; }
+      .client-card:first-child { border-radius: 16px 16px 0 0 !important; }
+      .client-card:last-child { border-radius: 0 0 16px 16px !important; }
+    }
+
+    /* ── GTM / EVENTS ── */
+    #gtm {
+      border-top: 1px solid var(--gray-2);
+    }
+
+    .gtm-headline {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      max-width: 580px;
+    }
+
+    .gtm-sub {
+      font-size: 16px;
+      color: #c3bfb9;
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 56px;
+    }
+
+    /* GTM two-column layout */
+    .gtm-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .gtm-left {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      padding-top: 4px;
+    }
+
+    .gtm-right {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gtm-event-visual {
+      position: relative;
+      background: var(--black);
+      aspect-ratio: 9/16;
+      border-radius: 16px;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    /* Photo slideshow */
+    .gtm-photo-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .gtm-photo-slide.active { opacity: 1; }
+
+    .gtm-photo-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gtm-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a1a;
+    }
+
+    .gtm-photo-placeholder p {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #444;
+    }
+
+    /* Overlay caption */
+    .gtm-visual-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 32px 28px;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+      z-index: 2;
+    }
+
+    .gtm-event-tag {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+
+    .gtm-event-name {
+      font-family: var(--serif);
+      font-size: clamp(14px, 1.6vw, 22px);
+      font-weight: 400;
+      line-height: 1.25;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .gtm-event-date {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.04em;
+    }
+
+    /* Dot indicators */
+    .gtm-dots {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 6px;
+      z-index: 3;
+    }
+
+    .gtm-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    .gtm-dot.active { background: rgba(255,255,255,0.9); }
+
+    .gtm-event-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .gtm-detail-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .gtm-detail-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+    }
+
+    .gtm-detail-value {
+      font-size: 15px;
+      color: var(--black);
+      line-height: 1.4;
+    }
+
+    .gtm-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .gtm-chip {
+      font-size: 12px;
+      color: var(--gray-3);
+      border: 1px solid var(--gray-2);
+      padding: 5px 14px;
+      border-radius: 100px;
+    }
+
+    /* ── TRACTION ── */
+    #traction {
+      border-top: 1px solid var(--gray-2);
+    }
+
+    .traction-headline {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 56px;
+      max-width: 560px;
+    }
+
+    .traction-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--gray-2);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+
+    .traction-cell {
+      background: var(--white);
+      padding: 40px 32px;
+    }
+
+    .traction-cell:first-child { border-radius: 16px 0 0 16px; }
+    .traction-cell:last-child { border-radius: 0 16px 16px 0; }
+
+    .traction-num {
+      font-family: var(--serif);
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .traction-desc {
+      font-size: 14px;
+      color: var(--gray-3);
+      line-height: 1.5;
+    }
+
+    .investor-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .investor-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+    }
+
+    .investor-chip {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      border: 1px solid var(--gray-2);
+      padding: 7px 16px;
+      border-radius: 100px;
+    }
+
+    /* ── CTA ── */
+    #cta {
+      background: var(--black);
+      color: var(--white);
+      max-width: 100%;
+      padding: 120px 48px;
+    }
+
+    #cta .inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .cta-headline {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 60px);
+      font-weight: 400;
+      line-height: 1.1;
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+
+    .cta-sub {
+      font-size: 16px;
+      color: #999;
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-white {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--black);
+      background: var(--white);
+      padding: 13px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-white:hover { opacity: 0.85; }
+
+    .btn-outline-white {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--white);
+      border: 1px solid #3a3a3a;
+      padding: 13px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .btn-outline-white:hover { border-color: #888; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--gray-2);
+    }
+
+    .footer-name {
+      font-size: 13px;
+      color: var(--gray-3);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--gray-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--black); }
+
+    /* Theme toggle */
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      color: var(--gray-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+      margin-left: 8px;
+    }
+    .theme-toggle:hover { color: var(--black); }
+    .theme-toggle svg { width: 15px; height: 15px; display: block; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; }
+      .nav-links { gap: 20px; }
+      .nav-links li:not(:first-child) { display: none; }
+
+      #hero { padding: 120px 24px 60px; grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { order: -1; }
+      section { padding: 72px 24px; }
+
+      .problem-grid { grid-template-columns: 1fr; }
+      .problem-card { border-radius: 0 !important; }
+      .problem-card:first-child { border-radius: 16px 16px 0 0 !important; }
+      .problem-card:last-child { border-radius: 0 0 16px 16px !important; }
+
+      .feature-switcher { grid-template-columns: 1fr; gap: 32px; align-items: start; }
+      .feature-preview-panel { position: relative; top: 0; height: auto; aspect-ratio: 16/9; }
+
+      .why-grid { grid-template-columns: 1fr; gap: 40px; }
+      .gtm-layout { grid-template-columns: 1fr; gap: 40px; }
+      .traction-grid { grid-template-columns: 1fr; }
+      .traction-cell { border-radius: 0 !important; }
+      .traction-cell:first-child { border-radius: 16px 16px 0 0 !important; }
+      .traction-cell:last-child { border-radius: 0 0 16px 16px !important; }
+
+      #cta { padding: 80px 24px; }
+      footer { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">
+      <svg width="28" height="36" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <path d="M 18 4 C 16 10, 6 30, 2 42" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 18 4 C 20 10, 28 28, 34 42" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M 9 28 Q 18 25 28 28" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+    </a>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <ul class="nav-links">
+        <li><a href="virse.html" class="active">Virse</a></li>
+        <li><a href="investing.html">Investing</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="angelaos.html">AngelaOS</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div id="hero">
+
+    <!-- Left: text content -->
+    <div class="hero-content">
+
+      <div class="hero-eyebrow">
+        <span class="status-dot"></span>
+        <span>Pre-seed · $2.7M</span>
+        <span class="sep">·</span>
+        <span>New York, NY</span>
+      </div>
+
+      <p class="hero-label">Currently building</p>
+
+      <h1 class="hero-title">Virse<em> AI</em></h1>
+      <p class="hero-subtitle">
+        AI-native design infrastructure<br/>for commercial creative teams.
+      </p>
+
+      <p class="hero-desc">
+        We combine AI with human designers to make the production of commercial-grade visual assets scalable, systematic, and reliable — without sacrificing quality.
+      </p>
+
+      <div class="hero-meta">
+        <div class="meta-pill">
+          <span class="meta-pill-label">Role</span>
+          <span class="meta-pill-value">Co-founder · CPO · GTM</span>
+        </div>
+        <div class="meta-pill">
+          <span class="meta-pill-label">Raised</span>
+          <span class="meta-pill-value">$2.7M pre-seed · <a href="https://en.zhenfund.com/" target="_blank" style="color: inherit; text-decoration: underline; text-underline-offset: 3px;">ZhenFund</a></span>
+        </div>
+        <div class="meta-pill">
+          <span class="meta-pill-label">Since</span>
+          <span class="meta-pill-value">2025</span>
+        </div>
+      </div>
+
+      <div class="hero-ctas">
+        <a href="https://beta.virse.art/login" target="_blank" class="btn-primary">See the product</a>
+      </div>
+
+    </div>
+
+    <!-- Right: product video -->
+    <div class="hero-visual">
+      <div class="video-frame">
+        <div class="video-frame-bar">
+          <span class="frame-dot"></span>
+          <span class="frame-dot"></span>
+          <span class="frame-dot"></span>
+          <div class="frame-url"><span>virse.art</span></div>
+        </div>
+        <video class="hero-video" autoplay loop muted playsinline>
+          <source src="virse-concept.webm" type="video/webm" />
+        </video>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- THE PROBLEM -->
+  <section id="problem">
+    <p class="section-label">The problem</p>
+    <h2 class="problem-headline">
+      Creative tools haven't caught up<br/>to how AI actually works.
+    </h2>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">⚙️</div>
+        <p class="problem-card-title">Complex workflows, broken context</p>
+        <p class="problem-card-desc">Creative teams juggle 6–12 separate tools for search, generation, editing, and delivery. Context and quality get lost at every handoff.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🔍</div>
+        <p class="problem-card-title">Lost assets, lost memory</p>
+        <p class="problem-card-desc">Existing DAMs rely on manual tagging and keyword search. Teams can't find what they already own — so they commission duplicate work.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🎨</div>
+        <p class="problem-card-title">Designer taste doesn't scale</p>
+        <p class="problem-card-desc">AI tools generate fast, but none understand taste or brand. The nuance that separates considered from generic remains invisible to AI — and impossible to replicate at scale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE PRODUCT -->
+  <section id="product">
+    <p class="section-label">The product</p>
+    <h2 class="product-headline">
+      One platform, your entire visual system.
+    </h2>
+    <p class="product-sub">
+      I designed Virse to give creative teams one place where taste, brand, and production scale exist together — without the handoff loss.
+    </p>
+
+    <div class="feature-switcher">
+
+      <!-- Left: tab list -->
+      <div class="feature-tabs" id="featureTabs">
+
+        <div class="feature-tab active" data-index="0">
+          <div class="feature-tab-header">
+            <span class="feature-num">01</span>
+            <span class="feature-title">Your taste, encoded</span>
+          </div>
+          <p class="feature-desc">I built Virse to learn a designer's visual language. The platform encodes aesthetic judgment, so every output reflects your taste.</p>
+          <div class="feature-tab-progress" id="progress-0"></div>
+        </div>
+
+        <div class="feature-tab" data-index="1">
+          <div class="feature-tab-header">
+            <span class="feature-num">02</span>
+            <span class="feature-title">50+ models, one canvas</span>
+          </div>
+          <p class="feature-desc">Without switching tools, your workflow stays fluid, your output stays consistent in one place.</p>
+          <div class="feature-tab-progress" id="progress-1"></div>
+        </div>
+
+        <div class="feature-tab" data-index="2">
+          <div class="feature-tab-header">
+            <span class="feature-num">03</span>
+            <span class="feature-title">Search with taste</span>
+          </div>
+          <p class="feature-desc">Find assets by feel, not filename — by mood, or studio-tailored preference — and surface exactly what you're looking for.</p>
+          <div class="feature-tab-progress" id="progress-2"></div>
+        </div>
+
+        <div class="feature-tab" data-index="3">
+          <div class="feature-tab-header">
+            <span class="feature-num">04</span>
+            <span class="feature-title">Your team, one standard</span>
+          </div>
+          <p class="feature-desc">Design quality doesn't scale through documentation. I built Virse so teams share a live visual standard — stays on-brand as you grow.</p>
+          <div class="feature-tab-progress" id="progress-3"></div>
+        </div>
+
+      </div>
+
+      <!-- Right: preview panel -->
+      <div class="feature-preview-panel">
+
+        <div class="feature-preview-slide active" data-index="0">
+          <video src="Website-Personalize.webm" autoplay loop muted playsinline></video>
+        </div>
+
+        <div class="feature-preview-slide" data-index="1">
+          <video src="Website-Create-Mode.webm" loop muted playsinline></video>
+        </div>
+
+        <div class="feature-preview-slide" data-index="2">
+          <video src="Search-Mode.webm" loop muted playsinline></video>
+        </div>
+
+        <div class="feature-preview-slide" data-index="3">
+          <video src="Website-Manage-Your-Idea.webm" loop muted playsinline></video>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHY NOW — archived
+  <section id="why">
+    <p class="section-label">Why now</p>
+    <div class="why-grid">
+      <div>
+        <h2 class="why-headline">
+          The creative stack is ready<br/>to be rebuilt.
+        </h2>
+        <div class="why-body">
+          <p>
+            Foundation models crossed a quality threshold in 2024 that makes commercial-grade AI generation viable for the first time. But the infrastructure layer — the DAMs, the workflows, the brand systems — hasn't caught up.
+          </p>
+          <p>
+            Virse is timing this gap deliberately. We're not building a feature on top of an existing tool. We're building the new infrastructure layer that creative teams will operate on for the next decade.
+          </p>
+          <p>
+            The enterprises that move now will own their AI creative advantage. The ones that wait will be dependent on whoever's platform they're stuck on.
+          </p>
+        </div>
+      </div>
+
+      <div class="why-stats">
+        <div class="stat-row">
+          <p class="stat-num">$14B</p>
+          <p class="stat-desc">Global DAM market by 2028, growing at 16% CAGR — ripe for AI-native disruption</p>
+        </div>
+        <div class="stat-row">
+          <p class="stat-num">68%</p>
+          <p class="stat-desc">Of enterprise creative teams report asset discovery as their #1 workflow bottleneck</p>
+        </div>
+        <div class="stat-row">
+          <p class="stat-num">3×</p>
+          <p class="stat-desc">Faster time-to-asset for teams using AI-assisted creative infrastructure vs. legacy tools</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- CLIENTS -->
+  <section id="clients">
+    <p class="section-label">Clients</p>
+    <h2 class="clients-headline">
+      Built for brands, studios,<br/>and creative labs.
+    </h2>
+    <p class="clients-sub">
+      As co-founder, I led our early client relationships — from independent studios to in-house creative teams — using each partnership to shape the product and build traction toward a production-ready creative system.
+    </p>
+
+    <div class="clients-grid">
+
+      <div class="client-card">
+        <div class="client-card-top">
+          <p class="client-name">OCD Oracle Creative Design</p>
+          <p class="client-category">Creative Studio</p>
+        </div>
+        <p class="client-desc">A top creative studio championing minimalist, original design with sharp commercial awareness.</p>
+      </div>
+
+      <div class="client-card">
+        <div class="client-card-top">
+          <p class="client-name">Miracle Miles</p>
+          <p class="client-category">Footwear Design</p>
+        </div>
+        <p class="client-desc">Crafting refined, comfort-driven footwear concepts with cinematic product storytelling.</p>
+      </div>
+
+      <div class="client-card">
+        <div class="client-card-top">
+          <p class="client-name">DREO</p>
+          <p class="client-category">Next-wave Appliances</p>
+        </div>
+        <p class="client-desc">Designing the next generation of sleek, minimalist home appliances.</p>
+      </div>
+
+      <div class="client-card">
+        <div class="client-card-top">
+          <p class="client-name">Moody</p>
+          <p class="client-category">Campaign & Ads</p>
+        </div>
+        <p class="client-desc">Bold campaign visuals and stylized contact lens ads for one of the fastest-growing beauty brands.</p>
+      </div>
+
+      <div class="client-card">
+        <div class="client-card-top">
+          <p class="client-name">Toolant</p>
+          <p class="client-category">Tool Use Cases</p>
+        </div>
+        <p class="client-desc">Professional-grade hand tools and accessories through compelling product imagery and scene renders.</p>
+      </div>
+
+      <div class="client-card">
+        <div class="client-card-top">
+          <p class="client-name">WOW Creative Design</p>
+          <p class="client-category">Brand & Packaging</p>
+        </div>
+        <p class="client-desc">iF Award–recognised consultancy blending Eastern aesthetics with modern brand strategy and spatial design.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GTM / EVENTS -->
+  <section id="gtm">
+    <p class="section-label">In the wild</p>
+
+    <div class="gtm-layout">
+
+      <!-- Left: headline + sub + details -->
+      <div class="gtm-left">
+        <h2 class="gtm-headline">
+          We show up where the creatives are.
+        </h2>
+        <p class="gtm-sub">
+          GTM for Virse is deliberate — I host and curate events where creative directors, design leaders, and AI-forward teams actually gather. Building community before pipeline.
+        </p>
+        <p class="gtm-sub" style="margin-top: -20px;">
+          One highlight of GTM marked Virse's soft launch — and we shared a case study with creative partner <a href="https://www.realmcellars.com/" target="_blank" style="color: var(--black); text-decoration: underline; text-underline-offset: 3px;"><em>Realm Cellars</em></a>, a fine wine producer from Napa Valley, exploring how Virse can interpret the concepting of a creative winery from its aesthetic context — extending into branding, marketing, architecture, and photography outputs.
+        </p>
+        <div class="gtm-event-detail">
+          <div class="gtm-detail-row">
+            <p class="gtm-detail-label">What</p>
+            <p class="gtm-detail-value">Virse-hosted wine happy hour for founders and designers in creative tech.</p>
+          </div>
+          <div class="gtm-detail-row">
+            <p class="gtm-detail-label">Who</p>
+            <p class="gtm-detail-value">Creative directors, designers at studios or in-house teams, design-forward founders, and AI investors</p>
+          </div>
+          <div class="gtm-detail-row">
+            <p class="gtm-detail-label">Why</p>
+            <p class="gtm-detail-value">Community-first GTM — we build trust before we build pipeline</p>
+          </div>
+          <div class="gtm-chips">
+            <span class="gtm-chip">NYTechWeek by a16z</span>
+            <span class="gtm-chip">250+ RSVP</span>
+            <span class="gtm-chip">Exclusive Event</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: slideshow aligned to top -->
+      <div class="gtm-right">
+        <div class="gtm-event-visual" id="gtmSlideshow">
+
+          <div class="gtm-photo-slide active" data-slide="0">
+            <img src="tech-week-phot.JPG" alt="TechWeek Happy Hour" />
+          </div>
+          <div class="gtm-photo-slide" data-slide="1">
+            <img src="DSCF6356.JPG" alt="TechWeek Happy Hour" />
+          </div>
+          <div class="gtm-photo-slide" data-slide="2">
+            <img src="DSCF6410.JPG" alt="TechWeek Happy Hour" />
+          </div>
+          <div class="gtm-photo-slide" data-slide="3">
+            <img src="DSCF6425.JPG" alt="TechWeek Happy Hour" />
+          </div>
+
+          <div class="gtm-dots" id="gtmDots">
+            <div class="gtm-dot active" data-dot="0"></div>
+            <div class="gtm-dot" data-dot="1"></div>
+            <div class="gtm-dot" data-dot="2"></div>
+            <div class="gtm-dot" data-dot="3"></div>
+          </div>
+
+          <div class="gtm-visual-caption">
+            <p class="gtm-event-tag">Featured event</p>
+            <p class="gtm-event-name">Virse x Creative Systems<br/>Happy Hour at #NYTechWeek</p>
+            <p class="gtm-event-date">New York · June 2026</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TRACTION -->
+  <section id="traction">
+    <p class="section-label">Traction</p>
+    <h2 class="traction-headline">
+      Pre-seed stage. Already moving.
+    </h2>
+
+    <div class="traction-grid">
+      <div class="traction-cell">
+        <p class="traction-num">$2.7M</p>
+        <p class="traction-desc">Pre-seed raised, led by <a href="https://en.zhenfund.com/" target="_blank" style="color: inherit; text-decoration: underline; text-underline-offset: 3px;">ZhenFund</a> — April 2026</p>
+      </div>
+      <div class="traction-cell">
+        <p class="traction-num">2025</p>
+        <p class="traction-desc">Founded and building globally in New York, San Francisco, and Shenzhen</p>
+      </div>
+      <div class="traction-cell">
+        <p class="traction-num">Beta</p>
+        <p class="traction-desc">With design-forward enterprise teams</p>
+      </div>
+    </div>
+
+    <div class="investor-row">
+      <span class="investor-label">Backed by</span>
+      <span class="investor-chip">ZhenFund</span>
+    </div>
+  </section>
+
+  <!-- CTA — archived
+  <section id="cta">
+    <div class="inner">
+      <h2 class="cta-headline">
+        Interested in Virse?
+      </h2>
+      <p class="cta-sub">
+        Whether you're an investor, a potential design partner, or a creative team looking for early access — I want to hear from you.
+      </p>
+      <div class="cta-actions">
+        <a href="mailto:achen0019@gmail.com" class="btn-white">Reach out</a>
+        <a href="index.html" class="btn-outline-white">Back to Angela's site</a>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">© 2026 Virse AI · Built by Angela Chen</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="https://www.linkedin.com/in/anqichen19/" target="_blank">LinkedIn</a>
+      <a href="mailto:achen0019@gmail.com">Email</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── Theme toggle ──
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    function syncToggleIcon() {
+      const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+      document.getElementById("icon-sun").style.display  = isDark ? "block" : "none";
+      document.getElementById("icon-moon").style.display = isDark ? "none"  : "block";
+    }
+    syncToggleIcon();
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      syncToggleIcon();
+    });
+
+    // ── GTM photo slideshow ──
+    (function() {
+      const photoSlides = document.querySelectorAll('.gtm-photo-slide');
+      const dots = document.querySelectorAll('.gtm-dot');
+      let photoIndex = 0;
+
+      function showPhoto(idx) {
+        photoSlides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        photoSlides[idx].classList.add('active');
+        dots[idx].classList.add('active');
+        photoIndex = idx;
+      }
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => showPhoto(parseInt(dot.dataset.dot)));
+      });
+
+      setInterval(() => showPhoto((photoIndex + 1) % photoSlides.length), 3500);
+    })();
+
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // ── Feature switcher ──
+    const DURATION = 4000; // ms per feature
+    const tabs = document.querySelectorAll('.feature-tab');
+    const slides = document.querySelectorAll('.feature-preview-slide');
+    let current = 0;
+    let timer = null;
+    let progressTimer = null;
+
+    function goTo(index, resetProgress = true) {
+      // Deactivate all
+      tabs.forEach(t => t.classList.remove('active'));
+      slides.forEach(s => s.classList.remove('active'));
+
+      // Clear any running progress bar
+      if (resetProgress) clearProgress();
+
+      // Activate target
+      tabs[index].classList.add('active');
+      slides[index].classList.add('active');
+
+      // Play video in the slide if present
+      const video = slides[index].querySelector('video');
+      if (video && video.src) { video.currentTime = 0; video.play(); }
+
+      current = index;
+
+      // Animate progress bar
+      const bar = document.getElementById('progress-' + index);
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          bar.style.transition = 'width ' + DURATION + 'ms linear';
+          bar.style.width = '100%';
+        });
+      });
+    }
+
+    function clearProgress() {
+      document.querySelectorAll('.feature-tab-progress').forEach(b => {
+        b.style.transition = 'none';
+        b.style.width = '0%';
+      });
+    }
+
+    function startAuto() {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        goTo((current + 1) % tabs.length);
+      }, DURATION);
+    }
+
+    // Click to switch
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const idx = parseInt(tab.dataset.index);
+        if (idx === current) return;
+        clearInterval(timer);
+        goTo(idx);
+        startAuto();
+      });
+    });
+
+    // Pause on hover
+    const switcher = document.querySelector('.feature-switcher');
+    switcher.addEventListener('mouseenter', () => clearInterval(timer));
+    switcher.addEventListener('mouseleave', () => startAuto());
+
+    // Kick off
+    goTo(0);
+    startAuto();
+
+  </script>
+
+</body>
+</html>
