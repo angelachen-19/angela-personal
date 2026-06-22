@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AngelaOS — Angela Chen</title>
+  <script>(function(){ document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark'); })();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Tokens (dark default) ── */
+    :root {
+      --black:   #e8e5de;
+      --white:   #0d0d0b;
+      --gray-1:  #161614;
+      --gray-2:  #282724;
+      --gray-3:  #c3bfb9;
+      --nav-bg:  rgba(13,13,11,0.92);
+      --serif:   'Fraunces', Georgia, serif;
+      --sans:    'Plus Jakarta Sans', system-ui, sans-serif;
+      --hero-muted: #c3bfb9;
+      /* Window accent tints — dark */
+      --win-h-bar: #221b10;
+      --win-r-bar: #101a12;
+      --win-t-bar: #15101f;
+      --win-h-dot: #a07832;
+      --win-r-dot: #3a7a50;
+      --win-t-dot: #6050a8;
+      --win-border: #282724;
+      --win-bg:    #161614;
+      --win-body-bg: #0d0d0b;
+      --cs-bg:     #1e1a0e;
+      --cs-border: #3a3018;
+      --cs-text:   #a07832;
+    }
+
+    [data-theme="light"] {
+      --black:   #0f0f0f;
+      --white:   #fafaf8;
+      --gray-1:  #f2f1ef;
+      --gray-2:  #d4d2ce;
+      --gray-3:  #8a887f;
+      --nav-bg:  rgba(250,250,248,0.88);
+      --hero-muted: #8a887f;
+      /* Window accent tints — light */
+      --win-h-bar: #ffecd6;
+      --win-r-bar: #d8f0e0;
+      --win-t-bar: #ede6ff;
+      --win-h-dot: #b87020;
+      --win-r-dot: #2a6e44;
+      --win-t-dot: #5a40b8;
+      --win-border: #d4d2ce;
+      --win-bg:    #ffffff;
+      --win-body-bg: #fafaf8;
+      --cs-bg:     #fff8ec;
+      --cs-border: #e8d4a8;
+      --cs-text:   #a07832;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--black);
+      height: 100vh;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* ── Subtle dot grid ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(195,191,185,0.13) 1px, transparent 1px);
+      background-size: 22px 22px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV (matches index.html) ── */
+    nav#nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav#nav.scrolled { border-color: var(--gray-2); }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--black);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--gray-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover       { color: var(--black); }
+    .nav-links a.active      { color: var(--black); }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      color: var(--gray-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+      margin-left: 8px;
+    }
+    .theme-toggle:hover { color: var(--black); }
+    .theme-toggle svg { width: 15px; height: 15px; display: block; }
+
+    /* ── Desktop ── */
+    .desktop {
+      position: fixed;
+      top: 65px; left: 0; right: 0; bottom: 84px;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* ── Greeting ── */
+    .greeting {
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .greeting-name {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: var(--black);
+    }
+
+    .greeting-sub {
+      font-size: 12px;
+      color: var(--gray-3);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Windows ── */
+    .window {
+      position: absolute;
+      background: var(--win-bg);
+      border: 0.5px solid var(--win-border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.18);
+      min-width: 220px;
+      transition: box-shadow 0.15s;
+    }
+
+    .window:focus-within,
+    .window.focused {
+      box-shadow: 0 4px 28px rgba(0,0,0,0.38), 0 1px 4px rgba(0,0,0,0.22);
+    }
+
+    /* ── Titlebars ── */
+    .titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      cursor: grab;
+      position: relative;
+    }
+    .titlebar:active { cursor: grabbing; }
+
+    #win-hobbies  .titlebar { background: var(--win-h-bar); }
+    #win-reading  .titlebar { background: var(--win-r-bar); }
+    #win-thinking .titlebar { background: var(--win-t-bar); }
+
+    .dots { display: flex; gap: 5px; }
+
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: filter 0.12s;
+    }
+    .dot:hover { filter: brightness(0.8); }
+    .dot-r { background: #FF6058; }
+    .dot-y { background: #FFBD2E; }
+    .dot-g { background: #28C840; }
+
+    .win-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11.5px;
+      font-weight: 400;
+      color: var(--gray-3);
+      letter-spacing: 0.02em;
+      pointer-events: none;
+    }
+
+    /* ── Window body ── */
+    .win-body {
+      background: var(--win-body-bg);
+      padding: 18px 18px 20px;
+      border-top: 0.5px solid var(--win-border);
+    }
+
+    /* ── Coming soon state ── */
+    .cs-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--cs-bg);
+      border: 0.5px solid var(--cs-border);
+      border-radius: 100px;
+      padding: 5px 12px;
+      margin-bottom: 16px;
+    }
+
+    .cs-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--cs-text);
+      animation: blink 2.4s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    .cs-badge span {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--cs-text);
+    }
+
+    .win-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      margin-bottom: 8px;
+    }
+
+    .win-headline {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1.35;
+      color: var(--black);
+      margin-bottom: 10px;
+    }
+
+    .win-desc {
+      font-size: 13px;
+      color: var(--gray-3);
+      line-height: 1.65;
+    }
+
+    /* ── Dock ── */
+    .dock {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 0.5px solid var(--win-border);
+      border-radius: 22px;
+      padding: 9px 20px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      z-index: 9999;
+    }
+
+    .dock-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .dock-icon {
+      width: 48px; height: 48px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      transition: transform 0.2s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    .dock-item:hover .dock-icon { transform: translateY(-10px) scale(1.12); }
+
+    .dock-label {
+      font-size: 10px;
+      color: var(--gray-3);
+      opacity: 0;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    .dock-item:hover .dock-label { opacity: 1; }
+
+    .di-h { background: var(--win-h-bar); border: 0.5px solid var(--win-border); }
+    .di-r { background: var(--win-r-bar); border: 0.5px solid var(--win-border); }
+    .di-t { background: var(--win-t-bar); border: 0.5px solid var(--win-border); }
+
+    /* ── Dot indicator under open windows ── */
+    .dock-pip {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--gray-3);
+      opacity: 0;
+      transition: opacity 0.2s;
+      margin-top: 1px;
+    }
+    .dock-pip.visible { opacity: 0.6; }
+
+    /* ── Hidden state ── */
+    .window.hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">
+      <svg width="28" height="36" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <path d="M 18 4 C 16 10, 6 30, 2 42" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M 18 4 C 20 10, 28 28, 34 42" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M 9 28 Q 18 25 28 28" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <ul class="nav-links">
+        <li><a href="virse.html">Virse</a></li>
+        <li><a href="investing.html">Investing</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="angelaos.html" class="active">AngelaOS</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Desktop -->
+  <main class="desktop" id="desktop">
+
+    <div class="greeting">
+      <div class="greeting-name">AngelaOS</div>
+      <div class="greeting-sub">a personal operating system — in progress</div>
+    </div>
+
+    <!-- Hobbies -->
+    <div class="window" id="win-hobbies" style="left:calc(50% - 280px); top:85px; width:256px; z-index:12;">
+      <div class="titlebar" data-win="win-hobbies">
+        <div class="dots">
+          <span class="dot dot-r" data-action="close" data-win="win-hobbies"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+        <span class="win-title">Hobbies</span>
+      </div>
+      <div class="win-body">
+        <div class="cs-badge"><span class="cs-dot"></span><span>Coming soon</span></div>
+        <p class="win-label">Hobbies &amp; interests</p>
+        <p class="win-headline">Things I spend time on outside of work.</p>
+        <p class="win-desc">Filling this in soon — check back later.</p>
+      </div>
+    </div>
+
+    <!-- Reading -->
+    <div class="window" id="win-reading" style="left:calc(50% - 10px); top:55px; width:270px; z-index:12;">
+      <div class="titlebar" data-win="win-reading">
+        <div class="dots">
+          <span class="dot dot-r" data-action="close" data-win="win-reading"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+        <span class="win-title">Reading</span>
+      </div>
+      <div class="win-body">
+        <div class="cs-badge"><span class="cs-dot"></span><span>Coming soon</span></div>
+        <p class="win-label">Reading &amp; media</p>
+        <p class="win-headline">Books, films, and things worth consuming.</p>
+        <p class="win-desc">A log of what I've been reading and watching — coming soon.</p>
+      </div>
+    </div>
+
+    <!-- Thinking -->
+    <div class="window" id="win-thinking" style="left:calc(50% - 160px); top:268px; width:262px; z-index:12;">
+      <div class="titlebar" data-win="win-thinking">
+        <div class="dots">
+          <span class="dot dot-r" data-action="close" data-win="win-thinking"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+        <span class="win-title">Thinking</span>
+      </div>
+      <div class="win-body">
+        <div class="cs-badge"><span class="cs-dot"></span><span>Coming soon</span></div>
+        <p class="win-label">Notes &amp; writing</p>
+        <p class="win-headline">Essays, notes, and things I keep coming back to.</p>
+        <p class="win-desc">Writing in progress — will be here soon.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Dock -->
+  <nav class="dock" aria-label="Dock">
+    <div class="dock-item" onclick="toggleWindow('win-hobbies')" id="dock-hobbies">
+      <div class="dock-icon di-h">🪴</div>
+      <span class="dock-label">Hobbies</span>
+      <div class="dock-pip visible" id="pip-hobbies"></div>
+    </div>
+    <div class="dock-item" onclick="toggleWindow('win-reading')" id="dock-reading">
+      <div class="dock-icon di-r">📚</div>
+      <span class="dock-label">Reading</span>
+      <div class="dock-pip visible" id="pip-reading"></div>
+    </div>
+    <div class="dock-item" onclick="toggleWindow('win-thinking')" id="dock-thinking">
+      <div class="dock-icon di-t">✏️</div>
+      <span class="dock-label">Thinking</span>
+      <div class="dock-pip visible" id="pip-thinking"></div>
+    </div>
+  </nav>
+
+  <script>
+    /* ── Theme toggle ── */
+    function syncToggleIcon() {
+      const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+      document.getElementById('icon-sun').style.display  = dark ? 'block' : 'none';
+      document.getElementById('icon-moon').style.display = dark ? 'none'  : 'block';
+    }
+    syncToggleIcon();
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      syncToggleIcon();
+    });
+
+    /* ── Window stacking ── */
+    let zTop = 20;
+    function bringToFront(id) {
+      document.getElementById(id).style.zIndex = ++zTop;
+    }
+
+    /* ── Pip (dock indicator) sync ── */
+    const pipMap = { 'win-hobbies': 'pip-hobbies', 'win-reading': 'pip-reading', 'win-thinking': 'pip-thinking' };
+    function syncPip(winId) {
+      const win = document.getElementById(winId);
+      const pip = document.getElementById(pipMap[winId]);
+      if (!pip) return;
+      pip.classList.toggle('visible', !win.classList.contains('hidden'));
+    }
+
+    /* ── Toggle ── */
+    function toggleWindow(id) {
+      const win = document.getElementById(id);
+      if (win.classList.contains('hidden')) {
+        win.classList.remove('hidden');
+        bringToFront(id);
+      } else {
+        bringToFront(id);
+      }
+      syncPip(id);
+    }
+
+    /* ── Close dots ── */
+    document.querySelectorAll('.dot-r[data-action="close"]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const winId = btn.dataset.win;
+        document.getElementById(winId).classList.add('hidden');
+        syncPip(winId);
+      });
+    });
+
+    /* ── Drag ── */
+    let dragging = null, ox = 0, oy = 0;
+
+    document.querySelectorAll('.titlebar').forEach(bar => {
+      bar.addEventListener('mousedown', e => {
+        if (e.target.classList.contains('dot')) return;
+        const id = bar.dataset.win;
+        dragging = document.getElementById(id);
+        bringToFront(id);
+        const r = dragging.getBoundingClientRect();
+        ox = e.clientX - r.left;
+        oy = e.clientY - r.top;
+        e.preventDefault();
+      });
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const desk = document.getElementById('desktop');
+      const dr = desk.getBoundingClientRect();
+      let x = Math.max(0, Math.min(e.clientX - dr.left - ox, dr.width  - dragging.offsetWidth));
+      let y = Math.max(0, Math.min(e.clientY - dr.top  - oy, dr.height - dragging.offsetHeight));
+      dragging.style.left = x + 'px';
+      dragging.style.top  = y + 'px';
+    });
+
+    document.addEventListener('mouseup', () => { dragging = null; });
+
+    /* ── Click to focus ── */
+    document.querySelectorAll('.window').forEach(win => {
+      win.addEventListener('mousedown', () => bringToFront(win.id));
+    });
+
+    /* ── Nav scroll ── */
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+</body>
+</html>
