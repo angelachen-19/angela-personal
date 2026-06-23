@@ -344,16 +344,50 @@
     }
 
     .btn-primary {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
-      color: var(--white);
-      background: var(--black);
-      padding: 13px 28px;
+      letter-spacing: 0.02em;
+      color: var(--black);
+      background: rgba(232, 229, 222, 0.08);
+      padding: 13px 30px;
       border-radius: 100px;
       text-decoration: none;
-      transition: opacity 0.2s;
+      border: 1px solid rgba(232, 229, 222, 0.2);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow:
+        0 2px 24px rgba(0,0,0,0.18),
+        inset 0 1px 0 rgba(232,229,222,0.18),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
     }
-    .btn-primary:hover { opacity: 0.75; }
+    .btn-primary:hover {
+      background: rgba(232, 229, 222, 0.15);
+      border-color: rgba(232, 229, 222, 0.32);
+      box-shadow:
+        0 6px 32px rgba(0,0,0,0.22),
+        inset 0 1px 0 rgba(232,229,222,0.25),
+        inset 0 -1px 0 rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
+    [data-theme="light"] .btn-primary {
+      background: rgba(30,28,24,0.055);
+      border-color: rgba(30,28,24,0.12);
+      color: #1a1a18;
+      box-shadow:
+        0 2px 20px rgba(0,0,0,0.07),
+        inset 0 1px 0 rgba(255,255,255,0.6),
+        inset 0 -1px 0 rgba(0,0,0,0.06);
+    }
+    [data-theme="light"] .btn-primary:hover {
+      background: rgba(30,28,24,0.14);
+      border-color: rgba(30,28,24,0.26);
+      box-shadow:
+        0 6px 28px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.65),
+        inset 0 -1px 0 rgba(0,0,0,0.05);
+      transform: translateY(-1px);
+    }
 
     .btn-secondary {
       font-size: 14px;
@@ -439,8 +473,15 @@
       display: grid;
       grid-template-columns: 1fr 1.5fr;
       gap: 60px;
-      align-items: start;
+      align-items: stretch;
       margin-top: 48px;
+    }
+    .building-left {
+      display: flex;
+      flex-direction: column;
+    }
+    .building-left .virse-meta {
+      margin-top: auto;
     }
 
     .virse-label {
@@ -1111,12 +1152,14 @@
   <section id="building">
     <p class="section-label">Currently building</p>
     <div class="building-grid">
-      <div>
+      <div class="building-left">
         <p class="virse-label">Virse AI</p>
         <h2 class="virse-name"><a href="virse.html" style="color:inherit;text-decoration:none;">AI-native design infrastructure for creative teams.</a></h2>
+        <!-- virse desc archived
         <p class="virse-desc">
           Virse is a commercial-grade creative system that learns designers' aesthetic taste to produce commercial-grade visual assets scalable, systematic, and reliable — without sacrificing quality. I lead product, design, and GTM as co-founder.
         </p>
+        -->
         <div class="virse-meta">
           <div class="meta-row">
             <span class="meta-key">Role</span>
