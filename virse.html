@@ -1153,7 +1153,8 @@
     @media (max-width: 768px) {
       nav { padding: 18px 24px; }
       .nav-links { gap: 20px; }
-      .nav-links li:not(:first-child) { display: none; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 12px; }
 
       #hero { padding: 120px 24px 60px; grid-template-columns: 1fr; gap: 48px; }
       .hero-visual { order: -1; }
@@ -1180,6 +1181,12 @@
 
     [data-theme="light"] .cta-sub {
       color: #8a887f;
+    }
+    [data-theme="light"] .btn-glass {
+      color: #0f0f0f;
+      border-color: rgba(0,0,0,0.15);
+      background: rgba(0,0,0,0.06);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 4px 16px rgba(0,0,0,0.07);
     }
   </style>
 </head>
