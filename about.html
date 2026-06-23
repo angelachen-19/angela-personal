@@ -366,7 +366,9 @@
 
       .page-wrap { padding: 0 24px; }
       .intro-section { grid-template-columns: 1fr; padding: 120px 0 60px; gap: 40px; }
-      .intro-photo { margin-top: 0; aspect-ratio: 4 / 3; }
+      .intro-photo { margin-top: 0; aspect-ratio: 3 / 4; width: 100%; }
+      .spider-wrap { overflow-x: hidden; }
+      #spiderChart { width: 100%; }
       .exp-row { grid-template-columns: 1fr; gap: 4px; }
       .exp-date { text-align: left; }
       .think-grid { grid-template-columns: 1fr; }
@@ -579,12 +581,16 @@
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const dpr = window.devicePixelRatio || 1;
-      const W = 560, H = 500;
+      const BASE_W = 560, BASE_H = 500, BASE_R = 150;
+      const wrap = canvas.parentElement;
+      const maxW = wrap ? wrap.offsetWidth : BASE_W;
+      const scale = Math.min(1, maxW / BASE_W);
+      const W = BASE_W * scale, H = BASE_H * scale;
       canvas.width = W * dpr;
       canvas.height = H * dpr;
       canvas.style.width = W + 'px';
       canvas.style.height = H + 'px';
-      ctx.scale(dpr, dpr);
+      ctx.scale(dpr * scale, dpr * scale);
 
       const st = getComputedStyle(document.documentElement);
       const cBlack = st.getPropertyValue('--black').trim();
@@ -592,8 +598,8 @@
       const cGray3 = st.getPropertyValue('--gray-3').trim();
       const cProse = st.getPropertyValue('--prose').trim();
 
-      const cx = W / 2, cy = H / 2 + 10;
-      const R = 150;
+      const cx = BASE_W / 2, cy = BASE_H / 2 + 10;
+      const R = BASE_R;
       const levels = 5;
 
       const axes = [
@@ -616,6 +622,9 @@
         };
       }
 
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      const cGrid = isDark ? '#3e3c38' : cGray2;
+
       // Grid rings
       for (let l = 1; l <= levels; l++) {
         const r = (R / levels) * l;
@@ -625,7 +634,7 @@
           i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
         }
         ctx.closePath();
-        ctx.strokeStyle = cGray2;
+        ctx.strokeStyle = cGrid;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -636,7 +645,7 @@
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(p.x, p.y);
-        ctx.strokeStyle = cGray2;
+        ctx.strokeStyle = cGrid;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
