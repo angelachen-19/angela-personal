@@ -966,8 +966,8 @@
     /* ── HERO GLOBE ── */
     #hero-globe {
       flex-shrink: 0;
-      width: min(440px, 34vw);
-      height: min(440px, 34vw);
+      width: min(506px, 39vw);
+      height: min(506px, 39vw);
       position: relative;
       z-index: 1;
       pointer-events: none;
@@ -1482,8 +1482,13 @@
     nyGeo.setAttribute('position', new THREE.BufferAttribute(
       new Float32Array([nyX * 1.01, nyY * 1.01, nyZ * 1.01]), 3
     ));
+    function nyColor() {
+      return document.documentElement.getAttribute('data-theme') === 'light'
+        ? 0x9a6200 : 0xf0c060;
+    }
+
     var nyMat = new THREE.PointsMaterial({
-      color: 0xf0c060, size: 0.1, sizeAttenuation: true,
+      color: nyColor(), size: 0.1, sizeAttenuation: true,
       transparent: true, opacity: 1
     });
     globe.add(new THREE.Points(nyGeo, nyMat));
@@ -1496,7 +1501,7 @@
         pts.push(new THREE.Vector3(Math.cos(a) * radius, Math.sin(a) * radius, 0));
       }
       var rg  = new THREE.BufferGeometry().setFromPoints(pts);
-      var rm  = new THREE.LineBasicMaterial({ color: 0xf0c060, transparent: true, opacity: 1 });
+      var rm  = new THREE.LineBasicMaterial({ color: nyColor(), transparent: true, opacity: 1 });
       var rl  = new THREE.LineLoop(rg, rm);
       rl.quaternion.setFromUnitVectors(
         new THREE.Vector3(0, 0, 1),
@@ -1541,6 +1546,10 @@
     // Theme observer
     new MutationObserver(function() {
       mat.color = dotColor();
+      var nc = new THREE.Color(nyColor());
+      nyMat.color = nc;
+      ring1.mat.color = nc;
+      ring2.mat.color = nc;
     }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     // Resize
@@ -1691,15 +1700,6 @@
         ctx.fillStyle = `rgba(${dustC},${dustA.toFixed(3)})`; ctx.fill();
       });
 
-      if (dark) {
-        dn(0.600, 28, 0.00015, 0.0, '142,100,44');
-        dn(0.655, 24, 0.00020, 2.4, '160,116,52');
-        dn(0.710, 20, 0.00026, 5.1, '178,132,62');
-      } else {
-        dn(0.600, 28, 0.00015, 0.0, '148,100,36');
-        dn(0.655, 24, 0.00020, 2.4, '130,86,28');
-        dn(0.710, 20, 0.00026, 5.1, '112,72,20');
-      }
 
       t++; requestAnimationFrame(draw);
     }
