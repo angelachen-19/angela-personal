@@ -173,13 +173,9 @@
       0%, 100% { opacity: 1; }
       50%       { opacity: 0; }
     }
-    @keyframes roleSlideIn {
-      from { opacity: 0; transform: translateY(60%); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes roleSlideOut {
-      from { opacity: 1; transform: translateY(0); }
-      to   { opacity: 0; transform: translateY(-60%); }
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
     }
 
     /* ── HERO ── */
@@ -263,7 +259,6 @@
     .hero-role-wrap {
       height: clamp(36px, 4.5vw, 60px);
       overflow: hidden;
-      position: relative;
     }
     .hero-role {
       font-family: var(--serif);
@@ -273,14 +268,13 @@
       line-height: 1.05;
       letter-spacing: -0.02em;
       color: var(--hero-muted);
-      position: absolute;
       white-space: nowrap;
     }
-    .hero-role.entering {
-      animation: roleSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .hero-role.leaving {
-      animation: roleSlideOut 0.45s cubic-bezier(0.55, 0, 0.78, 0) forwards;
+    .hero-role .cursor {
+      font-style: normal;
+      font-weight: 300;
+      animation: cursorBlink 0.9s step-end infinite;
+      margin-left: 1px;
     }
 
     /* Existing hero body */
@@ -1080,7 +1074,7 @@
         <div class="hero-identity">
           <h1 class="hero-name">Angela Chen</h1>
           <div class="hero-role-wrap">
-            <span class="hero-role entering" id="heroRole">Founder</span>
+            <span class="hero-role" id="heroRole"><span class="cursor">|</span></span>
           </div>
         </div>
 
@@ -1449,33 +1443,39 @@
     updateNYCTime();
     setInterval(updateNYCTime, 1000);
 
-    // ── Role flipper ──
+    // ── Role typewriter ──
     const roles = ['Founder', 'Designer', 'Investor'];
     let roleIndex = 0;
-    const roleWrap = document.querySelector('.hero-role-wrap');
+    const roleEl = document.getElementById('heroRole');
 
-    function nextRole() {
-      const current = roleWrap.querySelector('.hero-role');
-
-      // Slide current out
-      current.classList.remove('entering');
-      current.classList.add('leaving');
-
-      // After exit animation, swap text and slide in
-      setTimeout(() => {
-        roleIndex = (roleIndex + 1) % roles.length;
-        current.textContent = roles[roleIndex];
-        current.classList.remove('leaving');
-        // Force reflow so animation restarts
-        void current.offsetWidth;
-        current.classList.add('entering');
-      }, 450);
+    function setContent(text) {
+      roleEl.innerHTML = text + '<span class="cursor">|</span>';
     }
 
-    // Wait for initial entry animation to finish, then start cycling
-    setTimeout(() => {
-      setInterval(nextRole, 2800);
-    }, 1800);
+    function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    async function typeLoop() {
+      await sleep(600);
+      while (true) {
+        const word = roles[roleIndex];
+        // Type in
+        for (let i = 1; i <= word.length; i++) {
+          setContent(word.slice(0, i));
+          await sleep(85);
+        }
+        // Pause
+        await sleep(1400);
+        // Delete
+        for (let i = word.length; i >= 0; i--) {
+          setContent(word.slice(0, i));
+          await sleep(48);
+        }
+        await sleep(200);
+        roleIndex = (roleIndex + 1) % roles.length;
+      }
+    }
+
+    setTimeout(typeLoop, 800);
   </script>
 
   <!-- Three.js globe -->

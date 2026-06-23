@@ -244,43 +244,15 @@
       border-bottom: 1px solid var(--gray-2);
     }
 
-    .think-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 2px;
-      background: var(--gray-2);
-      border-radius: 16px;
-      overflow: hidden;
+    .spider-wrap {
       margin-top: 48px;
+      display: flex;
+      justify-content: center;
     }
 
-    .think-cell {
-      background: var(--white);
-      padding: 32px 28px;
-    }
-
-    .think-cell-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gray-3);
-      margin-bottom: 14px;
-    }
-
-    .think-cell-title {
-      font-family: var(--serif);
-      font-size: 20px;
-      font-weight: 400;
-      line-height: 1.2;
-      color: var(--black);
-      margin-bottom: 12px;
-    }
-
-    .think-cell-desc {
-      font-size: 14px;
-      color: var(--gray-3);
-      line-height: 1.7;
+    #spiderChart {
+      display: block;
+      max-width: 100%;
     }
 
     .think-prose {
@@ -522,22 +494,8 @@
     <div class="think-section">
       <p class="section-label">The way I think</p>
 
-      <div class="think-grid">
-        <div class="think-cell">
-          <p class="think-cell-label">01</p>
-          <p class="think-cell-title">Product × Design</p>
-          <p class="think-cell-desc">I own both sides. No handoff friction. From user research to shipped interface to success metric.</p>
-        </div>
-        <div class="think-cell">
-          <p class="think-cell-label">02</p>
-          <p class="think-cell-title">AI fluency</p>
-          <p class="think-cell-desc">I've designed AI-native interfaces from scratch — multimodal, context-aware, real-time. Not prompt wrappers. Actual product experiences.</p>
-        </div>
-        <div class="think-cell">
-          <p class="think-cell-label">03</p>
-          <p class="think-cell-title">Founder mode</p>
-          <p class="think-cell-desc">I've led GTM, investor narrative, early community. I know what the first 12 months of building actually feel like.</p>
-        </div>
+      <div class="spider-wrap">
+        <canvas id="spiderChart"></canvas>
       </div>
 
       <div class="think-prose">
@@ -611,6 +569,128 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 20);
     });
+
+    // ── Spider Chart ──
+    function drawSpider() {
+      const canvas = document.getElementById('spiderChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const W = 560, H = 500;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.scale(dpr, dpr);
+
+      const st = getComputedStyle(document.documentElement);
+      const cBlack = st.getPropertyValue('--black').trim();
+      const cGray2 = st.getPropertyValue('--gray-2').trim();
+      const cGray3 = st.getPropertyValue('--gray-3').trim();
+      const cProse = st.getPropertyValue('--prose').trim();
+
+      const cx = W / 2, cy = H / 2 + 10;
+      const R = 150;
+      const levels = 5;
+
+      const axes = [
+        { label: 'Design Craft',      value: 0.95 },
+        { label: 'AI Fluency',        value: 0.90 },
+        { label: 'Product Strategy',  value: 0.93 },
+        { label: 'Founder Instinct',  value: 0.85 },
+        { label: 'Enterprise Scale',  value: 0.87 },
+        { label: 'GTM & Narrative',   value: 0.83 },
+      ];
+
+      const n = axes.length;
+      const step = (Math.PI * 2) / n;
+      const start = -Math.PI / 2;
+
+      function pt(i, r) {
+        return {
+          x: cx + r * Math.cos(start + i * step),
+          y: cy + r * Math.sin(start + i * step)
+        };
+      }
+
+      // Grid rings
+      for (let l = 1; l <= levels; l++) {
+        const r = (R / levels) * l;
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) {
+          const p = pt(i, r);
+          i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = cGray2;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Axis spokes
+      for (let i = 0; i < n; i++) {
+        const p = pt(i, R);
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = cGray2;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Data polygon — fill
+      ctx.beginPath();
+      for (let i = 0; i < n; i++) {
+        const p = pt(i, R * axes[i].value);
+        i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+      }
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(154,151,146,0.12)';
+      ctx.fill();
+      ctx.strokeStyle = cGray3;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Data dots
+      for (let i = 0; i < n; i++) {
+        const p = pt(i, R * axes[i].value);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = cBlack;
+        ctx.fill();
+      }
+
+      // Labels
+      ctx.fillStyle = cBlack;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      for (let i = 0; i < n; i++) {
+        const angle = start + i * step;
+        const labelR = R + 44;
+        const p = { x: cx + labelR * Math.cos(angle), y: cy + labelR * Math.sin(angle) };
+
+        // Axis title
+        ctx.font = '500 12px "Plus Jakarta Sans", system-ui, sans-serif';
+        ctx.fillStyle = cBlack;
+        ctx.fillText(axes[i].label, p.x, p.y);
+
+        // Value %
+        ctx.font = '11px "Plus Jakarta Sans", system-ui, sans-serif';
+        ctx.fillStyle = cGray3;
+        ctx.fillText(Math.round(axes[i].value * 100) + '%', p.x, p.y + 16);
+      }
+
+      // Center dot
+      ctx.beginPath();
+      ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = cGray2;
+      ctx.fill();
+    }
+
+    drawSpider();
+    new MutationObserver(drawSpider).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    window.addEventListener('resize', drawSpider);
   </script>
 
 </body>
