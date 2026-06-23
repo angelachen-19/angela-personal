@@ -1253,7 +1253,7 @@
           </div>
           <div class="prev-tags">
             <span class="prev-tag">SaaS</span>
-            <span class="prev-tag">Health</span>
+            <span class="prev-tag">Health Tech</span>
             <span class="prev-tag">Machine Learning</span>
           </div>
         </div>
@@ -1522,6 +1522,7 @@
       transparent: true, opacity: 0.55
     });
     var globe = new THREE.Points(geo, mat);
+    globe.position.x = 0.18;
     scene.add(globe);
 
     // ── New York marker  (lat 40.71°N, lon 74.01°W) ──
@@ -1568,6 +1569,95 @@
     var ring1 = makeRing(0.09);
     var ring2 = makeRing(0.09);
 
+    // ── Spider chart overlay (fixed — globe rotates behind it) ──
+    var chartGroup = new THREE.Group();
+    chartGroup.rotation.x = 0.18; // slight downward tilt for depth
+    chartGroup.position.x = 0.18;
+    scene.add(chartGroup);
+
+    var cN = 6;
+    var cVals = [0.95, 0.90, 0.93, 0.85, 0.87, 0.83];
+    var cR = 1.08;
+    var cLevels = 5;
+    var cStep = (Math.PI * 2) / cN;
+    var chartMats = [];
+
+    function cPt(idx, r) {
+      var angle = -Math.PI / 2 + idx * cStep;
+      return new THREE.Vector3(Math.cos(angle) * r, Math.sin(angle) * r, 0);
+    }
+
+    // Grid rings
+    for (var cl = 1; cl <= cLevels; cl++) {
+      var cr = (cR / cLevels) * cl;
+      var cRingPts = [];
+      for (var ci = 0; ci <= cN; ci++) cRingPts.push(cPt(ci % cN, cr));
+      var cRingGeo = new THREE.BufferGeometry().setFromPoints(cRingPts);
+      var cRingMat = new THREE.LineBasicMaterial({ color: dotColor(), transparent: true, opacity: 0.16 });
+      chartGroup.add(new THREE.Line(cRingGeo, cRingMat));
+      chartMats.push(cRingMat);
+    }
+
+    // Axis spokes
+    for (var ci = 0; ci < cN; ci++) {
+      var cSpokePts = [new THREE.Vector3(0, 0, 0), cPt(ci, cR)];
+      var cSpokeGeo = new THREE.BufferGeometry().setFromPoints(cSpokePts);
+      var cSpokeMat = new THREE.LineBasicMaterial({ color: dotColor(), transparent: true, opacity: 0.16 });
+      chartGroup.add(new THREE.Line(cSpokeGeo, cSpokeMat));
+      chartMats.push(cSpokeMat);
+    }
+
+    // Data polygon fill
+    var cShape = new THREE.Shape();
+    var cP0 = cPt(0, cR * cVals[0]);
+    cShape.moveTo(cP0.x, cP0.y);
+    for (var ci = 1; ci < cN; ci++) {
+      var cPi = cPt(ci, cR * cVals[ci]);
+      cShape.lineTo(cPi.x, cPi.y);
+    }
+    cShape.closePath();
+    var cFillGeo = new THREE.ShapeGeometry(cShape);
+    var cFillMat = new THREE.MeshBasicMaterial({ color: dotColor(), transparent: true, opacity: 0.07, side: THREE.DoubleSide });
+    chartGroup.add(new THREE.Mesh(cFillGeo, cFillMat));
+    chartMats.push(cFillMat);
+
+    // Data outline
+    var cOutPts = [];
+    for (var ci = 0; ci < cN; ci++) cOutPts.push(cPt(ci, cR * cVals[ci]));
+    cOutPts.push(cPt(0, cR * cVals[0]));
+    var cOutGeo = new THREE.BufferGeometry().setFromPoints(cOutPts);
+    var cOutMat = new THREE.LineBasicMaterial({ color: dotColor(), transparent: true, opacity: 0.5 });
+    chartGroup.add(new THREE.Line(cOutGeo, cOutMat));
+    chartMats.push(cOutMat);
+
+    // Vertex dots at each axis tip
+    var cVtxArr = new Float32Array(cN * 3);
+    for (var ci = 0; ci < cN; ci++) {
+      var cv = cPt(ci, cR * cVals[ci]);
+      cVtxArr[ci*3] = cv.x; cVtxArr[ci*3+1] = cv.y; cVtxArr[ci*3+2] = 0;
+    }
+    var cVtxGeo = new THREE.BufferGeometry();
+    cVtxGeo.setAttribute('position', new THREE.BufferAttribute(cVtxArr, 3));
+    var cVtxMat = new THREE.PointsMaterial({ color: dotColor(), size: 0.045, sizeAttenuation: true, transparent: true, opacity: 0.9 });
+    chartGroup.add(new THREE.Points(cVtxGeo, cVtxMat));
+    chartMats.push(cVtxMat);
+
+    // ── Spider chart HTML label overlay ──
+    var cLabelNames = ['Design Craft', 'AI Fluency', 'Product Strategy', 'Founder Instinct', 'Enterprise Scale', 'GTM & Narrative'];
+    var labelOverlay = document.createElement('div');
+    labelOverlay.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:3;';
+    container.appendChild(labelOverlay);
+    var labelEls = [];
+    for (var li = 0; li < cN; li++) {
+      var lel = document.createElement('div');
+      lel.style.cssText = 'position:absolute;transform:translate(-50%,-50%);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:10px;font-weight:300;line-height:1.35;text-align:center;pointer-events:none;opacity:0;transition:opacity 1.2s;white-space:nowrap;color:var(--black);';
+      lel.innerHTML = '<span style="display:block;letter-spacing:0.05em;opacity:0.82;">' + cLabelNames[li] + '</span>'
+        + '<span style="display:block;opacity:0.72;font-size:9px;">' + Math.round(cVals[li] * 100) + '%</span>';
+      labelOverlay.appendChild(lel);
+      labelEls.push(lel);
+    }
+    setTimeout(function() { for (var li = 0; li < labelEls.length; li++) labelEls[li].style.opacity = '1'; }, 2500);
+
     // ── Mouse parallax ──
     var targetX = 0, targetY = 0, curX = 0, curY = 0;
     document.addEventListener('mousemove', function(e) {
@@ -1594,6 +1684,20 @@
       var s1 = 0.4 + t1 * 3.2; ring1.mesh.scale.set(s1, s1, s1); ring1.mat.opacity = 1.0 * (1 - t1);
       var s2 = 0.4 + t2 * 3.2; ring2.mesh.scale.set(s2, s2, s2); ring2.mat.opacity = 1.0 * (1 - t2);
 
+      // Spider chart drifts very slowly counter to globe
+      chartGroup.rotation.z -= 0.00012;
+
+      // Update label positions each frame
+      scene.updateMatrixWorld();
+      var cW = container.offsetWidth, cH = container.offsetHeight;
+      for (var li = 0; li < cN; li++) {
+        var lv = cPt(li, cR * 1.1);
+        lv.applyMatrix4(chartGroup.matrixWorld);
+        lv.project(camera);
+        labelEls[li].style.left = ((lv.x * 0.5 + 0.5) * cW) + 'px';
+        labelEls[li].style.top  = ((-lv.y * 0.5 + 0.5) * cH) + 'px';
+      }
+
       renderer.render(scene, camera);
     })();
 
@@ -1604,6 +1708,8 @@
       nyMat.color = nc;
       ring1.mat.color = nc;
       ring2.mat.color = nc;
+      var cc = dotColor();
+      chartMats.forEach(function(m) { m.color = cc; });
     }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     // Resize
