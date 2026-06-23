@@ -536,6 +536,9 @@
       overflow: hidden;
       text-decoration: none;
     }
+    [data-theme="light"] .prev-card {
+      background: #f0efec;
+    }
 
     .prev-thumb {
       aspect-ratio: 1 / 1.2;
@@ -628,9 +631,12 @@
     .prev-tag {
       font-size: 11px;
       color: var(--gray-3);
-      border: 1px solid var(--gray-2);
+      border: 1px solid #4a4a4a;
       padding: 3px 10px;
       border-radius: 100px;
+    }
+    [data-theme="light"] .prev-tag {
+      border-color: #dedcda;
     }
 
     @media (max-width: 768px) {
