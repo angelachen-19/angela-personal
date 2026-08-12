@@ -361,14 +361,11 @@
     @media (max-width: 768px) {
       nav { padding: 18px 24px; }
       .nav-links { gap: 20px; }
-      .nav-links { gap: 16px; }
-      .nav-links a { font-size: 12px; }
+      .nav-links li:not(:first-child) { display: none; }
 
       .page-wrap { padding: 0 24px; }
       .intro-section { grid-template-columns: 1fr; padding: 120px 0 60px; gap: 40px; }
-      .intro-photo { margin-top: 0; aspect-ratio: 3 / 4; width: 100%; }
-      .spider-wrap { overflow-x: hidden; }
-      #spiderChart { width: 100%; }
+      .intro-photo { margin-top: 0; aspect-ratio: 4 / 3; }
       .exp-row { grid-template-columns: 1fr; gap: 4px; }
       .exp-date { text-align: left; }
       .think-grid { grid-template-columns: 1fr; }
@@ -431,7 +428,7 @@
           <p>I speak at universities and design events — including Cornell University and BrainStation. When away from laptop, I study piano at Juilliard, I drink wines (by Adele), and I play golf in summer, ski in winter.</p>
         </div>
         <div class="intro-contact">
-          <a href="mailto:angela.design19@gmail.com" class="contact-link">Email me</a>
+          <a href="Anqi Angela Chen Resume 2026.pdf" target="_blank" class="contact-link">Resume</a>
           <a href="https://www.linkedin.com/in/anqichen19/" target="_blank" class="contact-link secondary">LinkedIn</a>
         </div>
       </div>
@@ -503,9 +500,6 @@
 
       <div class="think-prose">
         <p>Most designers optimize for the screen. I optimize for the decision — what should this product do, for whom, and why now. That combination of craft and strategic thinking is rare, and it's what makes me useful at the earliest stages of company building.</p>
-        <!-- archived: enterprise scale paragraph
-        <p>I spent years designing at enterprise scale — shipping 20+ workflows used by 87% of the Fortune Global 500 — before going back to zero as a co-founder. That range means I know what "scalable" looks like before you need it.</p>
-        -->
       </div>
     </div>
 
@@ -581,16 +575,12 @@
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const dpr = window.devicePixelRatio || 1;
-      const BASE_W = 560, BASE_H = 500, BASE_R = 150;
-      const wrap = canvas.parentElement;
-      const maxW = wrap ? wrap.offsetWidth : BASE_W;
-      const scale = Math.min(1, maxW / BASE_W);
-      const W = BASE_W * scale, H = BASE_H * scale;
+      const W = 560, H = 500;
       canvas.width = W * dpr;
       canvas.height = H * dpr;
       canvas.style.width = W + 'px';
       canvas.style.height = H + 'px';
-      ctx.scale(dpr * scale, dpr * scale);
+      ctx.scale(dpr, dpr);
 
       const st = getComputedStyle(document.documentElement);
       const cBlack = st.getPropertyValue('--black').trim();
@@ -598,8 +588,8 @@
       const cGray3 = st.getPropertyValue('--gray-3').trim();
       const cProse = st.getPropertyValue('--prose').trim();
 
-      const cx = BASE_W / 2, cy = BASE_H / 2 + 10;
-      const R = BASE_R;
+      const cx = W / 2, cy = H / 2 + 10;
+      const R = 150;
       const levels = 5;
 
       const axes = [
@@ -622,9 +612,6 @@
         };
       }
 
-      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-      const cGrid = isDark ? '#3e3c38' : cGray2;
-
       // Grid rings
       for (let l = 1; l <= levels; l++) {
         const r = (R / levels) * l;
@@ -634,7 +621,7 @@
           i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
         }
         ctx.closePath();
-        ctx.strokeStyle = cGrid;
+        ctx.strokeStyle = cGray2;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -645,7 +632,7 @@
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(p.x, p.y);
-        ctx.strokeStyle = cGrid;
+        ctx.strokeStyle = cGray2;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
