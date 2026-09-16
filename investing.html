@@ -259,8 +259,7 @@
     @media (max-width: 768px) {
       nav { padding: 18px 24px; }
       .nav-links { gap: 20px; }
-      .nav-links { gap: 16px; }
-      .nav-links a { font-size: 12px; }
+      .nav-links li:not(:last-child):not(:first-child) { display: none; }
 
       .page-wrap { padding: 120px 24px 80px; }
       .portfolio-grid { grid-template-columns: 1fr; }
@@ -353,7 +352,7 @@
       <a href="https://repromptai.com/" target="_blank" class="portfolio-card">
         <span class="card-name">Reprompt</span>
         <span class="card-desc">Geospatial control panel for production AI systems</span>
-        <span class="card-meta">Seed · Y Combinator</span>
+        <span class="card-meta">Pre-seed · Y Combinator</span>
         <span class="card-arrow">↗</span>
       </a>
 
@@ -368,6 +367,13 @@
         <span class="card-name">Reconnect Labs</span>
         <span class="card-desc">Biopharmaceutical solutions in psychiatry</span>
         <span class="card-meta">Series A+</span>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <a href="https://kradle.ai/" target="_blank" class="portfolio-card">
+        <span class="card-name">Kradle AI</span>
+        <span class="card-desc">Interactive simulation platform for evaluating frontier AI models on capability and safety</span>
+        <span class="card-meta">Seed · AI Fund</span>
         <span class="card-arrow">↗</span>
       </a>
 
