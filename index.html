@@ -975,6 +975,7 @@
   </style>
 <script type="importmap">{"imports":{"three":"./wine-cabinet/vendor/three.webgpu.js","three/webgpu":"./wine-cabinet/vendor/three.webgpu.js"}}</script>
   <link rel="stylesheet" href="nav-brand.css?v=wine-1" />
+  <link rel="stylesheet" href="virse-gallery.css?v=4">
 </head>
 
 <body>
@@ -1090,48 +1091,50 @@
   -->
 
   <!-- WHAT I'M BUILDING -->
-  <section id="building">
-    <p class="section-label">Currently building</p>
+  <section id="building" aria-labelledby="building-heading">
+    <p class="section-label">Recently building</p>
     <div class="building-grid">
       <div class="building-left">
-        <p class="virse-label">Virse AI</p>
-        <h2 class="virse-name"><a href="virse.html" style="color:inherit;text-decoration:none;">AI-native design infrastructure for creative teams.</a></h2>
-        <!-- virse desc archived
-        <p class="virse-desc">
-          Virse is a commercial-grade creative system that learns designers' aesthetic taste to produce commercial-grade visual assets scalable, systematic, and reliable — without sacrificing quality. I lead product, design, and GTM as co-founder.
-        </p>
-        -->
-        <div class="virse-meta">
-          <div class="meta-row">
-            <span class="meta-key">Role</span>
-            <span class="meta-val">Co-founder · CPO · GTM</span>
-          </div>
-          <div class="meta-row">
-            <span class="meta-key">Stage</span>
-            <span class="meta-val">Pre-seed</span>
-          </div>
-          <div class="meta-row">
-            <span class="meta-key">Based</span>
-            <span class="meta-val">New York, NY</span>
-          </div>
-        </div>
-        <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;">
-          <a href="virse.html" style="font-size:13px;font-weight:500;color:var(--black);border:1px solid var(--black);padding:9px 20px;border-radius:100px;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Read more ↗</a>
-          <a href="https://beta.virse.art/login" target="_blank" style="font-size:13px;font-weight:400;color:var(--black);opacity:0.75;padding:9px 20px;border-radius:100px;border:1px solid transparent;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">Try the product →</a>
-        </div>
+        <h2 class="virse-name" id="building-heading"><a href="virse.html" style="color:inherit;text-decoration:none;">Virse AI — AI-native design infrastructure for creative teams.</a></h2>
+        <p class="virse-desc">From a designer’s taste to a team’s creative workflow. I lead product, design, and GTM as co-founder.</p>
+        <div class="building-links"><a href="virse.html">Read the story ↗</a><a href="https://beta.virse.art/login" target="_blank" rel="noopener">Try the product ↗</a></div>
       </div>
-      <div class="virse-image">
-        <video
-          src="virse-demo.webm"
-          autoplay
-          loop
-          muted
-          playsinline
-          style="width:100%;border-radius:12px;display:block;"
-        ></video>
+      <div class="building-gallery">
+        <div class="gallery-toolbar"><span>A look inside Virse</span><button class="gallery-motion" type="button" aria-pressed="false" aria-label="Pause automatic video previews">Pause previews</button></div>
+        <div class="gallery-grid">
+          <figure class="gallery-item gallery-item--lead">
+            <button class="gallery-media" type="button" data-title="The creative system" aria-label="Enlarge: The creative system" aria-haspopup="dialog"><video src="virse-demo.webm" poster="assets/virse-gallery/virse-demo.jpg" loop muted playsinline preload="none" aria-label="The creative system"></video><span class="gallery-expand" aria-hidden="true">↗</span></button>
+            <figcaption><span>00</span>The creative system</figcaption>
+          </figure>
+          <figure class="gallery-item gallery-item--poster">
+            <button class="gallery-media" type="button" data-title="Virse, out in the world" aria-label="Enlarge: Virse, out in the world" aria-haspopup="dialog"><img src="assets/virse-gallery/virse-billboard.png" alt="Virse billboard concept in New York: Virse is all you need" loading="lazy" width="928" height="1120"><span class="gallery-expand" aria-hidden="true">↗</span></button>
+            <figcaption><span>Brand study</span>Virse, out in the world</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <button class="gallery-media" type="button" data-title="Your taste, encoded" aria-label="Enlarge: Your taste, encoded" aria-haspopup="dialog"><video src="Website-Personalize.webm" poster="assets/virse-gallery/Website-Personalize.jpg" loop muted playsinline preload="none" aria-label="Your taste, encoded"></video><span class="gallery-expand" aria-hidden="true">↗</span></button>
+            <figcaption><span>01</span>Your taste, encoded</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <button class="gallery-media" type="button" data-title="50+ models, one canvas" aria-label="Enlarge: 50+ models, one canvas" aria-haspopup="dialog"><video src="Website-Create-Mode.webm" poster="assets/virse-gallery/Website-Create-Mode.jpg" loop muted playsinline preload="none" aria-label="50+ models, one canvas"></video><span class="gallery-expand" aria-hidden="true">↗</span></button>
+            <figcaption><span>02</span>50+ models, one canvas</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <button class="gallery-media" type="button" data-title="Search with taste" aria-label="Enlarge: Search with taste" aria-haspopup="dialog"><video src="Search-Mode.webm" poster="assets/virse-gallery/Search-Mode.jpg" loop muted playsinline preload="none" aria-label="Search with taste"></video><span class="gallery-expand" aria-hidden="true">↗</span></button>
+            <figcaption><span>03</span>Search with taste</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <button class="gallery-media" type="button" data-title="Your team, one standard" aria-label="Enlarge: Your team, one standard" aria-haspopup="dialog"><video src="Website-Manage-Your-Idea.webm" poster="assets/virse-gallery/Website-Manage-Your-Idea.jpg" loop muted playsinline preload="none" aria-label="Your team, one standard"></video><span class="gallery-expand" aria-hidden="true">↗</span></button>
+            <figcaption><span>04</span>Your team, one standard</figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </section>
+  <dialog class="gallery-lightbox" aria-labelledby="gallery-detail-title">
+    <header><h3 id="gallery-detail-title"></h3><button class="gallery-close" type="button" aria-label="Close preview">×</button></header>
+    <video controls loop muted playsinline hidden></video>
+    <img alt="" hidden>
+  </dialog>
 
   <!-- PREVIOUSLY DESIGNED -->
   <section id="prev-design">
@@ -1408,5 +1411,6 @@
   </script>
 
   <script type="module" src="./wine-cabinet/cabinet.js?v=cellar-type-13"></script>
+  <script type="module" src="virse-gallery.js?v=1"></script>
 </body>
 </html>

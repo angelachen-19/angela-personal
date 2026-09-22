@@ -1,0 +1,51 @@
+/* Homepage project gallery: a quiet introduction alongside a visual story. */
+#building { max-width:1280px; scroll-margin-top:78px; }
+#building .section-label { margin-bottom:0; }
+#building .building-grid { grid-template-columns:1fr; gap:28px; align-items:start; margin-top:28px; }
+#building .building-left { position:static; display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:40px; row-gap:10px; align-items:start; }
+#building .virse-name { font-size:20px; line-height:1.4; margin-bottom:0; }
+#building .virse-desc { grid-column:1; max-width:690px; font-size:14px; line-height:1.7; margin-bottom:0; }
+#building .virse-meta { margin-top:0; padding-top:24px; border-top:1px solid var(--gray-2); }
+#building .meta-row { font-size:12px; gap:8px; }
+#building .meta-key { min-width:42px; }
+.building-links { grid-column:2; grid-row:1/3; display:flex; flex-wrap:wrap; gap:18px; margin-top:5px; }
+.building-links a { font-size:13px; color:var(--black); text-decoration:none; border-bottom:1px solid var(--gray-2); padding-bottom:5px; }
+.building-links a:hover { border-color:var(--black); }
+.building-gallery { min-width:0; }
+.gallery-toolbar { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:16px; font-size:11px; color:var(--gray-3); }
+.gallery-motion { border:0; padding:6px 0 6px 12px; background:none; color:inherit; font:inherit; cursor:pointer; }
+.gallery-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px 16px; }
+.gallery-item { margin:0; min-width:0; }
+.gallery-item--lead { grid-column:1/-1; }
+.gallery-item--poster { grid-row:span 2; display:flex; flex-direction:column; }
+.gallery-media { display:block; position:relative; width:100%; padding:0; border:0; border-radius:12px; overflow:hidden; background:transparent; cursor:zoom-in; aspect-ratio:16/9; }
+.gallery-item--lead .gallery-media { aspect-ratio:823/540; }
+.gallery-media video,.gallery-media img { display:block; width:100%; height:100%; object-fit:cover; }
+.gallery-item--poster .gallery-media { flex:1; min-height:0; aspect-ratio:auto; }
+.gallery-item--poster img { object-fit:cover; }
+.gallery-expand { position:absolute; right:12px; bottom:12px; width:28px; height:28px; display:grid; place-items:center; border-radius:50%; background:rgba(20,22,20,.65); color:#fff; font:16px/1 var(--sans); }
+.gallery-item figcaption { display:flex; align-items:baseline; gap:10px; padding-top:12px; color:var(--black); font-size:12px; line-height:1.5; }
+.gallery-item figcaption span { font-size:10px; color:var(--gray-3); }
+.gallery-media:focus-visible,.gallery-motion:focus-visible { outline:2px solid var(--black); outline-offset:4px; }
+.gallery-lightbox { width:min(1100px,94vw); max-height:94svh; margin:auto; border:1px solid var(--gray-2); border-radius:16px; padding:16px; color:var(--black); background:var(--white); }
+.gallery-lightbox::backdrop { background:rgba(10,12,10,.8); backdrop-filter:blur(8px); }
+.gallery-lightbox header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 0 12px; }
+.gallery-lightbox h3 { font:400 22px/1.2 var(--serif); letter-spacing:-.045em; }
+.gallery-close { background:none; border:0; color:inherit; font:26px/1 var(--sans); width:40px; height:40px; cursor:pointer; }
+.gallery-lightbox video,.gallery-lightbox img { display:block; width:100%; max-height:76svh; object-fit:contain; border-radius:8px; }
+.gallery-lightbox [hidden] { display:none; }
+@media(max-width:760px) {
+  #building .building-grid { grid-template-columns:1fr; gap:32px; }
+  #building .building-left { grid-template-columns:1fr; }
+  .building-links { grid-column:1; grid-row:auto; margin-top:8px; }
+  #building .virse-name { max-width:540px; font-size:20px; }
+  #building .virse-desc { max-width:480px; }
+  #building .virse-meta { gap:8px; }
+  .gallery-item figcaption { font-size:11px; gap:6px; }
+}
+@media(max-width:480px) {
+  .gallery-grid { grid-template-columns:1fr; gap:24px; }
+  .gallery-item--poster { grid-row:auto; }
+  .gallery-item--poster .gallery-media { aspect-ratio:4/5; flex:auto; }
+  .gallery-item figcaption { font-size:13px; }
+}
