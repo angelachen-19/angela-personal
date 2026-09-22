@@ -975,7 +975,8 @@
   </style>
 <script type="importmap">{"imports":{"three":"./wine-cabinet/vendor/three.webgpu.js","three/webgpu":"./wine-cabinet/vendor/three.webgpu.js"}}</script>
   <link rel="stylesheet" href="nav-brand.css?v=wine-1" />
-  <link rel="stylesheet" href="virse-gallery.css?v=4">
+  <link rel="stylesheet" href="virse-gallery.css?v=7">
+  <link rel="stylesheet" href="site-footer.css?v=1">
 </head>
 
 <body>
@@ -1293,24 +1294,6 @@
             <a href="mailto:achen0019@gmail.com" class="btn-white">Say hello ↗</a>
           </div>
         </div>
-
-        <!-- Ways to connect archived
-        <div class="connect-routes">
-          <p class="connect-routes-label">Ways to connect</p>
-          <a class="connect-route" href="mailto:achen0019@gmail.com?subject=Founder%20collaboration">
-            <span><span class="connect-route-title">Founders</span><span class="connect-route-desc">Design × AI as a core product lever at the earliest stage.</span></span>
-            <span class="connect-route-arrow">↗</span>
-          </a>
-          <a class="connect-route" href="mailto:achen0019@gmail.com?subject=Investor%20conversation">
-            <span><span class="connect-route-title">VC & Investors</span><span class="connect-route-desc">Early ideas in AI infrastructure, healthcare, creativity and sports.</span></span>
-            <span class="connect-route-arrow">↗</span>
-          </a>
-          <a class="connect-route" href="mailto:achen0019@gmail.com?subject=Media%20or%20speaking">
-            <span><span class="connect-route-title">Media & Speaking</span><span class="connect-route-desc">Interviews, keynotes and panels on AI, design systems and creative work.</span></span>
-            <span class="connect-route-arrow">↗</span>
-          </a>
-        </div>
-        -->
       </div>
 
       <div class="footer-meta">
@@ -1402,15 +1385,10 @@
 
     setTimeout(typeLoop, 800);
 
-    // ── Interactive closing statement ──
-    const connectSection = document.getElementById('connect');
-
-    new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) connectSection.classList.add('is-visible');
-    }, { threshold: 0.12 }).observe(connectSection);
   </script>
 
   <script type="module" src="./wine-cabinet/cabinet.js?v=cellar-type-13"></script>
   <script type="module" src="virse-gallery.js?v=1"></script>
+  <script type="module" src="site-footer.js?v=1"></script>
 </body>
 </html>
