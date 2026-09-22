@@ -3,7 +3,8 @@ import { OrbitControls } from './vendor/OrbitControls.js';
 import { RoundedBoxGeometry } from './vendor/RoundedBoxGeometry.js';
 import { RoomEnvironment } from './vendor/RoomEnvironment.js';
 import { createArtistBottle } from './artist-bottles.js';
-import { createGalleryLabel, galleryCollections } from './gallery-labels.js';
+import { createGalleryLabel, galleryCollections } from './gallery-labels.js?v=averia-1';
+import { createCellarAudio } from './cellar-audio.js?v=2';
 
 const $ = id => document.getElementById(id);
 const stage = $('hero-cabinet') || $('stage');
@@ -11,6 +12,8 @@ const embedded=stage.id==='hero-cabinet';
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 async function main() {
+  // Canvas artwork must be drawn after its font is available.
+  await document.fonts.load('400 86px "Averia Serif Libre"').catch(()=>{});
   const viewport=document.createElement('div');
   viewport.className='cellar-viewport';
   Object.assign(viewport.style,{position:'absolute',inset:'0 0 124px'});
@@ -294,6 +297,13 @@ async function main() {
   let selectedRow=null,selectedObject=null;
   const rowButtons=[...document.querySelectorAll('[data-cellar-row]')];
   const itemButtons=new Map();
+  const sound=createCellarAudio();
+  // Capture activation before the canvas / native controls start their animation.
+  for(const element of [stage,...rowButtons]){
+    element.addEventListener('pointerdown',()=>sound.unlock(),{capture:true});
+    element.addEventListener('click',()=>sound.unlock(),{capture:true});
+    element.addEventListener('keydown',event=>{if(['Enter',' ','Escape','d','D'].includes(event.key))sound.unlock();},{capture:true});
+  }
   const focusStyle=document.createElement('style');
   focusStyle.textContent=`
     .cellar-label-hint {
@@ -334,9 +344,9 @@ async function main() {
       transform: translateY(0);
     }
     .cellar-label-screen__kicker { color:var(--screen-accent); font:600 9px/1.4 Arial,sans-serif; letter-spacing:.16em; text-transform:uppercase; }
-    .cellar-label-screen__index { position:absolute; left:17px; top:17px; bottom:17px; width:52px; display:grid; place-items:center; color:#554e3c; background:#e9e3d5; border-radius:3px; border-bottom:3px solid var(--screen-accent); font:32px/1 Georgia,serif; }
+    .cellar-label-screen__index { position:absolute; left:17px; top:17px; bottom:17px; width:52px; display:grid; place-items:center; color:#554e3c; background:#e9e3d5; border-radius:3px; border-bottom:3px solid var(--screen-accent); font:32px/1 "Averia Serif Libre",serif; }
     .cellar-label-screen__cellar { margin-top:8px; color:#aaa79d; font:10px/1.4 Arial,sans-serif; letter-spacing:.03em; }
-    .cellar-label-screen__title { margin:6px 0 0; color:inherit; font:400 clamp(21px,2.1vw,28px)/1.12 Georgia,serif; letter-spacing:-.025em; text-wrap:balance; }
+    .cellar-label-screen__title { margin:6px 0 0; color:inherit; font:400 clamp(21px,2.1vw,28px)/1.12 "Averia Serif Libre",serif; letter-spacing:-.025em; text-wrap:balance; }
     .cellar-label-screen__close { position:absolute; right:9px; top:9px; width:40px; height:40px; border:0; border-radius:50%; display:grid; place-items:center; background:transparent; color:#bbb6aa; cursor:pointer; font:24px/1 Arial,sans-serif; }
     .cellar-label-screen__close:hover { color:#fffaf0; background:#ffffff0c; }
     .cellar-label-screen__close:focus-visible { outline:2px solid var(--screen-accent); outline-offset:-3px; }
@@ -418,7 +428,7 @@ async function main() {
   accessStyle.textContent=`.cellar-access { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
     .cellar-access:focus-within { width:auto; height:auto; overflow:visible; clip-path:none; bottom:128px; left:12px; right:12px; z-index:4; }
     .cellar-access button { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
-    .cellar-access button:focus { position:relative; width:auto; height:auto; clip-path:none; padding:8px 12px; border:1px solid #ac8959; border-radius:4px; background:#eee8dc; color:#292b25; font:13px Georgia,serif; outline:2px solid #ac8959; outline-offset:3px; }`;
+    .cellar-access button:focus { position:relative; width:auto; height:auto; clip-path:none; padding:8px 12px; border:1px solid #ac8959; border-radius:4px; background:#eee8dc; color:#292b25; font:13px "Averia Serif Libre",serif; outline:2px solid #ac8959; outline-offset:3px; }`;
   document.head.appendChild(accessStyle);
   const accessibleItems=document.createElement('div');accessibleItems.className='cellar-access';accessibleItems.setAttribute('role','group');accessibleItems.setAttribute('aria-label','Cellar bottles');
   objects.forEach(object=>{
@@ -479,12 +489,18 @@ async function main() {
   stage.dataset.ready='true';stage.setAttribute('aria-busy','false');
   rowButtons.forEach(button=>{button.disabled=false;});
   let previous=performance.now();const started=previous;
+  let doorSoundDirection=0;
   renderer.setAnimationLoop(()=>{
     if(document.hidden||!inView)return;
     const now=performance.now(),dt=Math.min((now-previous)/1000,.05);previous=now;
     const anythingOut=objects.some(object=>object.userData.pop>.015)||[...rows.values()].some(row=>row.progress>.015);
     const effectiveDoorTarget=anythingOut?1:target;
-    current=damp(current,now-started<450&&!reducedMotion?0:effectiveDoorTarget,3.6,dt);
+    const doorGoal=now-started<450&&!reducedMotion?0:effectiveDoorTarget;
+    const doorDirection=Math.abs(doorGoal-current)>.02?Math.sign(doorGoal-current):0;
+    if(doorDirection&&doorDirection!==doorSoundDirection)sound.play(doorDirection>0?'door-open':'door-close');
+    if(!doorDirection&&doorSoundDirection<0)sound.play('latch');
+    doorSoundDirection=doorDirection;
+    current=damp(current,doorGoal,3.6,dt);
     const previousBottleOut=objects.some(object=>object!==selectedObject&&object.userData.pop>.015);
     for(const object of objects){
       const data=object.userData,row=rows.get(data.row);
@@ -500,8 +516,11 @@ async function main() {
     for(const row of rows.values()){
       const rowBottleOut=objects.some(object=>object.userData.row===row.label&&object.userData.pop>.015);
       const active=selectedRow===row.label;
+      const extending=(active&&current>.95)||rowBottleOut;
+      if(extending&&!row.soundingExtension)sound.play('rack');
+      row.soundingExtension=extending;
       // Keep the tray extended until its bottle has settled; doors close last.
-      row.progress=damp(row.progress,((active&&current>.95)||rowBottleOut)?1:0,5,dt);
+      row.progress=damp(row.progress,extending?1:0,5,dt);
       row.group.position.z=row.progress*.84;
       row.light=damp(row.light,active?1:0,5,dt);
       row.lamps.forEach(lamp=>{lamp.intensity=.045+row.light*1.55;});

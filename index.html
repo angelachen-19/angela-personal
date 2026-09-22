@@ -8,7 +8,7 @@
   <script>(function(){ document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark'); })();</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,8 +23,8 @@
       --prose: #c3bfb9;
       --nav-bg: rgba(13,13,11,0.92);
       --accent: #e8e5de;
-      --serif: 'Fraunces', Georgia, serif;
-      --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --serif: 'Averia Serif Libre', serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
       --hero-muted: #c3bfb9;
     }
 
@@ -279,7 +279,7 @@
 
     /* Existing hero body */
     .hero-h1 {
-      font-family: var(--serif);
+      font-family: var(--sans);
       font-size: clamp(16px, 1.7vw, 21px);
       font-weight: 300;
       line-height: 1.4;
@@ -968,6 +968,10 @@
     @media(prefers-reduced-motion:reduce){
       #connect .connect-left, #connect .connect-routes, #connect .footer-meta { opacity:1; transform:none; transition:none; }
     }
+  /* Averia display typography: tighter spacing with room for the italic role. */
+    .hero-name,.hero-role,.virse-name,.prev-title {letter-spacing:-.045em;}
+    .connect-headline {letter-spacing:-.05em;}
+    .hero-role-wrap {height:auto;min-height:1.2em;overflow:visible;}
   </style>
 <script type="importmap">{"imports":{"three":"./wine-cabinet/vendor/three.webgpu.js","three/webgpu":"./wine-cabinet/vendor/three.webgpu.js"}}</script>
   <link rel="stylesheet" href="nav-brand.css?v=wine-1" />
@@ -1275,8 +1279,8 @@
               <img src="Muse design awards slides.008.jpeg" alt="" />
             </span>
             is the product bet
-            <span class="footer-inline-visual" role="img" aria-label="Community conversations">
-              <img src="IMG_4451.jpg" alt="" />
+            <span class="footer-inline-visual" role="img" aria-label="Wine bottle with an illustrated label">
+              <img src="footer-wine-bottle.png" alt="" />
             </span>?
           </h2>
           <p class="connect-sub">
@@ -1403,6 +1407,6 @@
     }, { threshold: 0.12 }).observe(connectSection);
   </script>
 
-  <script type="module" src="./wine-cabinet/cabinet.js?v=cellar-wood-10"></script>
+  <script type="module" src="./wine-cabinet/cabinet.js?v=cellar-type-13"></script>
 </body>
 </html>

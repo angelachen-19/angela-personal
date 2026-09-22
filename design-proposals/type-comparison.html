@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Angela — 字体对比</title>
+  <link id="candidate-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500&family=Source+Sans+3:wght@300;400;500;600&amp;display=swap">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#eeeae2;color:#24261f;font:14px/1.6 system-ui,sans-serif}
+    header{padding:28px 32px 18px;max-width:1500px;margin:auto}h1{font-size:23px;font-weight:500;margin:0 0 6px}p{margin:0;color:#68685f}
+    .samples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:0 32px 24px;max-width:1500px;margin:auto}
+    .sample{padding:24px;border:1px solid #d6d0c4;border-radius:14px;background:#faf8f3;min-width:0}
+    .sample[data-active=true]{border-color:#8d7152;box-shadow:0 0 0 1px #8d7152}
+    .tag{font:11px/1.5 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#77776b}
+    .name{font:400 clamp(30px,3.5vw,54px)/1.12 var(--face);letter-spacing:-.025em;margin:28px 0 8px}
+    .role{font:italic 400 30px/1.3 var(--face);color:#77776b;min-height:40px}
+    .name,.role{letter-spacing:-.045em}.mini{letter-spacing:-.05em}
+    .body-sample{font-family:var(--body);margin-top:22px}.body-sample p{font-size:16px;line-height:1.65;min-height:0;margin:14px 0;color:#393d34}.nav-sample{font-size:12px;font-weight:500}.sample button{font-family:var(--body)}select{font:inherit;padding:8px;border:1px solid #c9c3b7;border-radius:8px;background:transparent}
+    .mini{font:400 24px/1.35 var(--face);letter-spacing:-.02em;margin:26px 0 22px;min-height:100px}
+    [data-font="averia"] .name,[data-font="averia"] .role{letter-spacing:-.045em}
+    [data-font="averia"] .mini{letter-spacing:-.05em}
+    .sample p{font-size:12px;min-height:40px}
+    button{font:inherit;cursor:pointer;border:1px solid #c9c3b7;border-radius:30px;padding:8px 15px;background:transparent;color:inherit}
+    button:hover{background:#e6e0d4}button:focus-visible{outline:2px solid #8d7152;outline-offset:3px}
+    button[aria-pressed=true]{background:#292d23;color:#fff;border-color:#292d23}
+    .sample button{margin-top:16px}.toolbar{position:sticky;top:0;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 24px;background:#eeeae2f5;border-block:1px solid #d6d0c4;backdrop-filter:blur(10px)}
+    .toolbar .spacer{flex:1}#status{font-size:12px;color:#68685f}iframe{display:block;width:100%;height:850px;border:0;background:#0d0d0b}
+    @media(max-width:760px){.samples{grid-template-columns:1fr;padding:0 18px 20px}.name{font-size:46px}.mini{min-height:0}.sample p{min-height:0}.toolbar{padding:12px}.spacer{display:none}iframe{height:780px}}
+  </style>
+</head>
+<body>
+  <header><h1>Averia × 正文字体搭配</h1><p>Averia 大标题已应用到各页面。下方比较三款正文：导航、介绍、按钮和页脚同步切换；正式页面已采用 DM Sans 正文，仍可在这里比较其他搭配。</p></header>
+  <section class="samples" aria-label="字体样本">
+    <article class="sample" data-font="manrope" style="--face:'Averia Serif Libre',serif;--body:'Manrope',sans-serif">
+      <div class="tag">01 / Averia + Manrope</div><div class="name">Angela Chen</div><div class="role">Builder.</div>
+      <div class="body-sample"><div class="nav-sample">About &nbsp; Work &nbsp; Investing</div><p>A personal cellar of ideas I build, experiences I shape and futures I invest.</p><p>I'm open to advisor, investor and early-stage collaboration conversations.</p></div>
+      <div class="mini">Building something where design is the product bet?</div>
+      <p>几何、利落：让 Averia 的手绘感与产品气质形成层次。</p><button data-choice="manrope" aria-pressed="false">预览 Manrope</button>
+    </article>
+    <article class="sample" data-font="dm" style="--face:'Averia Serif Libre',serif;--body:'DM Sans',sans-serif">
+      <div class="tag">02 / Averia + DM Sans</div><div class="name">Angela Chen</div><div class="role">Builder.</div>
+      <div class="body-sample"><div class="nav-sample">About &nbsp; Work &nbsp; Investing</div><p>A personal cellar of ideas I build, experiences I shape and futures I invest.</p><p>I'm open to advisor, investor and early-stage collaboration conversations.</p></div>
+      <div class="mini">Building something where design is the product bet?</div>
+      <p>柔和、干净：我更推荐这组，兼顾个人感与小字号可读性。</p><button data-choice="dm" aria-pressed="false">预览 DM Sans</button>
+    </article>
+    <article class="sample" data-font="source" style="--face:'Averia Serif Libre',serif;--body:'Source Sans 3',sans-serif">
+      <div class="tag">03 / Averia + Source Sans 3</div><div class="name">Angela Chen</div><div class="role">Builder.</div>
+      <div class="body-sample"><div class="nav-sample">About &nbsp; Work &nbsp; Investing</div><p>A personal cellar of ideas I build, experiences I shape and futures I invest.</p><p>I'm open to advisor, investor and early-stage collaboration conversations.</p></div>
+      <div class="mini">Building something where design is the product bet?</div>
+      <p>舒展、偏阅读：适合项目叙述较多的内页。</p><button data-choice="source" aria-pressed="false">预览 Source Sans 3</button>
+    </article>
+  </section>
+  <div class="toolbar" aria-label="首页字体预览控制">
+    <button data-choice="manrope" aria-pressed="false">Manrope</button><button data-choice="dm" aria-pressed="true">DM Sans</button><button data-choice="source" aria-pressed="false">Source Sans 3</button><button data-choice="original" aria-pressed="false">原版正文</button>
+    <select id="page" aria-label="预览页面"><option value="index.html">首页</option><option value="about.html">About</option><option value="investing.html">Investing</option><option value="virse.html">Virse</option><option value="project-calmspace.html">CalmSpace</option></select>
+    <span class="spacer"></span><button id="hero">Hero</button><button id="footer">页脚标题</button><button id="theme">切换深浅色</button><span id="status" role="status">载入字体…</span>
+  </div>
+  <iframe id="preview" title="真实首页字体预览"></iframe>
+  <script>
+    const names={manrope:'Manrope',dm:'DM Sans',source:'Source Sans 3',original:'Plus Jakarta Sans'};
+    const faces=Object.fromEntries(Object.entries(names).map(([key,name])=>[key,`'${name}',sans-serif`]));
+    const frame=document.getElementById('preview'),status=document.getElementById('status');
+    let choice='dm',ready=false,revision=0;
+    document.querySelectorAll('[data-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.choice===choice)));
+    document.querySelectorAll('.sample').forEach(card=>card.dataset.active=String(card.dataset.font===choice));
+    async function apply(){
+      if(!ready)return;
+      const id=++revision,doc=frame.contentDocument;
+      doc.getElementById('type-preview-style').textContent=`:root {--sans:${faces[choice]} !important;} body {font-family:var(--sans);} .hero-h1 {font-family:var(--sans) !important;}`;
+      status.textContent=`${names[choice]} · 加载中…`;
+      try{
+        if(choice){
+          const loaded=await doc.fonts.load(`400 48px "${names[choice]}"`);
+          if(!loaded.length)throw new Error('Font unavailable');
+
+        }
+        if(id===revision)status.textContent=`${names[choice]} · 已就绪`;
+      }catch{if(id===revision)status.textContent='字体未加载，请检查网络后刷新';}
+    }
+    document.querySelectorAll('[data-choice]').forEach(button=>button.addEventListener('click',()=>{
+      choice=button.dataset.choice;
+      document.querySelectorAll('[data-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.choice===choice)));
+      document.querySelectorAll('.sample').forEach(card=>card.dataset.active=String(card.dataset.font===choice));apply();
+    }));
+    frame.addEventListener('load',()=>{
+      const doc=frame.contentDocument;
+
+      const link=document.getElementById('candidate-fonts').cloneNode();link.removeAttribute('id');link.onload=()=>apply();doc.head.appendChild(link);
+      const style=doc.createElement('style');style.id='type-preview-style';doc.head.appendChild(style);
+      ready=true;apply();
+      // Keep navigation in the preview so the original page stays untouched.
+      doc.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+    });
+    frame.src='../index.html?type-preview=6';
+    document.getElementById('page').onchange=e=>{ready=false;frame.src='../'+e.target.value+'?type-preview=6';};
+    document.getElementById('hero').onclick=()=>{if(ready)frame.contentWindow.scrollTo({top:0,behavior:'smooth'});};
+    document.getElementById('footer').onclick=()=>{if(ready)frame.contentDocument.getElementById('connect')?.scrollIntoView({behavior:'smooth'});};
+    document.getElementById('theme').onclick=()=>{if(ready){const html=frame.contentDocument.documentElement;html.dataset.theme=html.dataset.theme==='dark'?'light':'dark';}};
+  </script>
+</body>
+</html>
