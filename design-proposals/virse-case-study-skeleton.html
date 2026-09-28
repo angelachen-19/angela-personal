@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>DRAFT — Virse case study skeleton</title>
+  <style>
+    :root { --bg:#f8f7f3; --ink:#242822; --muted:#63685f; --line:#d8dbd1; --accent:#465d43; --note:#ecefe5; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    a { color:inherit; text-underline-offset:5px; }
+    a:focus-visible, button:focus-visible, summary:focus-visible { outline:2px solid var(--accent); outline-offset:5px; }
+    .review-bar { border-bottom:1px solid var(--line); padding:14px 5%; display:flex; justify-content:space-between; gap:20px; align-items:center; font-size:12px; }
+    button { font:inherit; border:1px solid var(--line); background:transparent; color:inherit; padding:8px 12px; border-radius:4px; cursor:pointer; }
+    main,footer { width:min(1120px,90%); margin:auto; }
+    header { padding:64px 0 32px; }
+    .eyebrow,.section-no { color:var(--accent); text-transform:uppercase; letter-spacing:.13em; font-size:11px; font-weight:600; }
+    h1,h2,h3,p,figure { margin:0; }
+    h1 { font:400 clamp(48px,7vw,88px)/1.03 Georgia,serif; letter-spacing:-.05em; margin:24px 0; max-width:900px; }
+    h2 { font:400 clamp(28px,4vw,44px)/1.13 Georgia,serif; letter-spacing:-.035em; margin:12px 0 20px; }
+    h3 { font-size:18px; line-height:1.4; margin-bottom:10px; font-weight:500; }
+    .intro { max-width:650px; color:var(--muted); font-size:19px; }
+    .meta { display:flex; flex-wrap:wrap; gap:14px 32px; margin:28px 0 0; font-size:13px; }
+    .meta span { color:var(--muted); }
+    nav { display:flex; gap:12px 26px; flex-wrap:wrap; border-block:1px solid var(--line); padding:18px 0; margin-top:30px; font-size:12px; }
+    nav a { text-decoration:none; }
+    section { padding:60px 0; border-bottom:1px solid var(--line); scroll-margin-top:24px; }
+    .section-head { display:grid; grid-template-columns:1fr 1.15fr; gap:40px; margin-bottom:26px; align-items:start; }
+    .section-head>p { padding-top:32px; color:var(--muted); }
+    .note { background:var(--note); border-left:2px solid #86977c; color:#45513d; padding:14px 18px; font-size:13px; line-height:1.8; margin:20px 0; }
+    .note strong { display:block; font-size:11px; letter-spacing:.05em; margin-bottom:3px; }
+    body.hide-notes .note { display:none; }
+    .media { border:1px solid var(--line); border-radius:6px; overflow:hidden; background:#171915; }
+    video { display:block; width:100%; aspect-ratio:16/9; object-fit:contain; }
+    figcaption { color:var(--muted); font-size:12px; margin:10px 0 0; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+    .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .placeholder { border:1px dashed #abb2a3; background:#f1f2ec; padding:24px; min-height:160px; display:flex; flex-direction:column; justify-content:center; }
+    .placeholder p { color:var(--muted); font-size:14px; }
+    .placeholder small { display:block; color:var(--accent); font-size:10px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:12px; }
+    .placeholder.visual { min-height:240px; }
+    .decision { margin-top:28px; }
+    .decision p { font-size:14px; color:var(--muted); }
+    .decision h3 { font-size:15px; }
+    .mini { border-top:1px solid var(--line); padding-top:20px; }
+    .number { font:400 40px/1.2 Georgia,serif; margin-bottom:10px; }
+    .caption { color:var(--muted); font-size:13px; }
+    details { margin-top:28px; border-top:1px solid var(--line); padding-top:20px; }
+    summary { cursor:pointer; font-size:14px; }
+    details p { color:var(--muted); font-size:14px; max-width:780px; margin-top:16px; }
+    footer { padding:34px 0 50px; display:flex; justify-content:space-between; gap:20px; color:var(--muted); font-size:13px; }
+    @media(max-width:700px) {
+      .review-bar { align-items:flex-start; }
+      .review-bar span { max-width:190px; }
+      header { padding-top:36px; }
+      section { padding:40px 0; }
+      .section-head,.grid,.grid.three { grid-template-columns:1fr; gap:20px; }
+      .section-head>p { padding-top:0; }
+      .intro { font-size:17px; }
+      h1 { font-size:49px; }
+      footer { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="review-bar">
+    <span>DRAFT / VIRSE CASE STUDY OUTLINE · Structure reference only · <a href="../virse.html">Continue on the current page ↗</a></span>
+    <button id="notes-toggle" type="button" aria-pressed="true">Hide editorial notes</button>
+  </div>
+  <main>
+    <header>
+      <p class="eyebrow">01 / The work · 2025–present</p>
+      <h1>Virse AI.<br>A workspace for<br>commercial creativity.</h1>
+      <p class="intro">Virse brings asset search, AI generation, and visual organization into one place for creative teams.</p>
+      <div class="meta"><p><span>Role</span> &nbsp;Co-founder · CPO · GTM</p><p><span>Focus</span> &nbsp;Product experience &amp; visual identity</p></div>
+      <aside class="note" lang="zh-CN"><strong>这一屏要回答：产品是什么，作品完成度如何？</strong>沿用现有产品演示作为占位。正式版本选一张你参与最深、细节最清晰的完整 UI 作为主视觉。标题为新文案草案；Focus 是本页拟展示方向，个人设计归属在下一节确认。</aside>
+      <figure>
+        <div class="media"><video controls muted playsinline preload="metadata" src="../virse-concept.webm" aria-label="Existing Virse product overview video"></video></div>
+        <figcaption>Product overview · Existing Virse demo</figcaption>
+      </figure>
+      <nav aria-label="Case study sections"><a href="#ownership">02 My contribution</a><a href="#context">03 Context</a><a href="#search">04 Search</a><a href="#create">05 Create</a><a href="#brand">06 Brand</a><a href="#outcomes">07 Outcomes</a></nav>
+    </header>
+
+    <section id="ownership">
+      <p class="section-no">02 / My contribution</p>
+      <h2>My role in shaping Virse.</h2>
+      <p class="intro">As co-founder, CPO, and GTM lead, my work spans the product and how we introduce it to creative teams.</p>
+      <div class="grid three decision">
+        <div class="placeholder"><small>To confirm · Ownership</small><h3>I designed</h3><p>[Specific screens, interactions, components, and brand assets personally designed.]</p></div>
+        <div class="placeholder"><small>To confirm · Leadership</small><h3>I led</h3><p>[Product direction, scope, and design decisions personally led.]</p></div>
+        <div class="placeholder"><small>To confirm · Collaboration</small><h3>I partnered with</h3><p>[Collaborators and the parts of the work they owned.]</p></div>
+      </div>
+      <aside class="note" lang="zh-CN"><strong>补充：明确分工</strong>保留已有创业角色，但需要把“我画了什么、决定了什么、团队完成什么”写清楚。后面每个重点案例都加一句对应的个人贡献。</aside>
+    </section>
+
+    <section id="context">
+      <div class="section-head"><div><p class="section-no">03 / Context</p><h2>Keep the creative context together.</h2></div><p>The current Virse story centers on a fragmented workflow: finding assets, generating new work, and keeping outputs aligned with a team's visual direction.</p></div>
+      <div class="grid three">
+        <div class="mini"><h3>Find</h3><p class="caption">Search existing assets by mood and visual preference.</p></div>
+        <div class="mini"><h3>Create</h3><p class="caption">Work with AI models within a shared canvas.</p></div>
+        <div class="mini"><h3>Organize</h3><p class="caption">Keep ideas and visual references available to the team.</p></div>
+      </div>
+      <aside class="note" lang="zh-CN"><strong>压缩原有 The problem + The product</strong>用一个真实任务来解释问题，例如一次具体的素材查找或创作任务。以上是现有功能的组织方式，不代表已验证的连续流程。补一条真实观察或访谈证据即可；暂不沿用“6–12 tools”等缺少出处的数字。</aside>
+      <details><summary>Supporting capabilities: personalization &amp; organization</summary><p>These existing previews provide context. The two sections below are the proposed design deep dives.</p><div class="grid decision">
+        <figure><div class="media"><video controls muted playsinline preload="none" src="../Website-Personalize.webm" aria-label="Virse personalization preview"></video></div><figcaption>Personalization · Existing preview</figcaption></figure>
+        <figure><div class="media"><video controls muted playsinline preload="none" src="../Website-Manage-Your-Idea.webm" aria-label="Virse idea organization preview"></video></div><figcaption>Organization · Existing preview</figcaption></figure>
+      </div></details>
+    </section>
+
+    <section id="search">
+      <div class="section-head"><div><p class="section-no">04 / Product detail A · Proposed focus</p><h2>Finding assets by visual intent.</h2></div><p>Virse's search experience helps teams find assets by mood and visual preference, beyond the filename.</p></div>
+      <figure><div class="media"><video controls muted playsinline preload="none" src="../Search-Mode.webm" aria-label="Existing Virse search preview"></video></div><figcaption>Search · Existing product preview; individual contribution to confirm</figcaption></figure>
+      <div class="grid decision">
+        <div class="placeholder visual"><small>Evidence slot A</small><h3>Earlier or alternative approach</h3><p>[A real option considered, with one sentence explaining its limitation.]</p></div>
+        <div class="placeholder visual"><small>Evidence slot B</small><h3>Selected interface, up close</h3><p>[Readable crop of the actual search controls, results, or selection state.]</p></div>
+      </div>
+      <div class="grid three decision">
+        <div class="mini"><h3>The constraint</h3><p>[What made this particular search task difficult?]</p></div>
+        <div class="mini"><h3>The decision</h3><p>[What did I change, and why did I choose it over another option?]</p></div>
+        <div class="mini"><h3>The tradeoff</h3><p>[What became better, and what limitation did we accept?]</p></div>
+      </div>
+      <aside class="note" lang="zh-CN"><strong>从 “Search with taste” 的卖点，展开一个真实决定</strong>暂选 Search，是因为已有素材、也容易展示信息层级。可聚焦结果密度、预览方式或筛选控件中的一个；最终取决于你亲手完成的部分。没有历史版本时，用当前方案的状态与限制解释决定，不补造 Before。</aside>
+    </section>
+
+    <section id="create">
+      <div class="section-head"><div><p class="section-no">05 / Product detail B · Proposed focus</p><h2>Creating with multiple models in one canvas.</h2></div><p>Virse brings multiple AI models into a shared creation workspace. This section will explain one design decision that makes that capability usable.</p></div>
+      <figure><div class="media"><video controls muted playsinline preload="none" src="../Website-Create-Mode.webm" aria-label="Existing Virse creation preview"></video></div><figcaption>Create · Existing product preview; individual contribution to confirm</figcaption></figure>
+      <div class="grid decision">
+        <div class="placeholder visual"><small>Evidence slot A</small><h3>The working interface</h3><p>[Full screen with real content, plus a close-up of the key control.]</p></div>
+        <div class="placeholder visual"><small>Evidence slot B</small><h3>The interaction in detail</h3><p>[A short sequence showing an important transition, loading state, or recovery action.]</p></div>
+      </div>
+      <div class="grid three decision">
+        <div class="mini"><h3>Layout &amp; hierarchy</h3><p>[How did I balance the canvas with the controls people need?]</p></div>
+        <div class="mini"><h3>Behavior &amp; feedback</h3><p>[What happens when an action changes the state of the workspace?]</p></div>
+        <div class="mini"><h3>Tools &amp; implementation</h3><p>[What did I prototype or build to resolve this question?]</p></div>
+      </div>
+      <aside class="note" lang="zh-CN"><strong>补充：一个 UI 决定 + 一个交互细节</strong>承接原来的 “50+ models, one canvas”。可讨论模型选择、参数收纳或生成反馈；这些目前都是提问方向，不是对既有设计过程的描述。这里最适合用原型或真实前端片段呈现你的动手能力。</aside>
+    </section>
+
+    <section id="brand">
+      <div class="section-head"><div><p class="section-no">06 / Brand &amp; launch</p><h2>A visual identity beyond the workspace.</h2></div><p>A focused selection of brand and launch materials, connected to the visual choices in the product.</p></div>
+      <div class="grid">
+        <div class="placeholder visual"><small>Asset to select · Credit required</small><h3>Identity &amp; typography</h3><p>[Original logo, type treatment, and one composition that demonstrate the visual language.]</p></div>
+        <div class="placeholder visual"><small>Asset to select · Credit required</small><h3>One finished application</h3><p>[Landing page, invitation, social graphic, or campaign material personally designed.]</p></div>
+      </div>
+      <aside class="note" lang="zh-CN"><strong>让品牌作品承担视觉证据</strong>优先使用你亲自设计的原始版式，再配一张应用图。现有 billboard 是候选素材，需明确原始设计、生成场景与合作归属。Realm Cellars 若展开，应标明哪些是产品生成成果，哪些是你本人设计。</aside>
+      <details><summary>Founder context · Taking Virse to the creative community</summary><p>I host and curate events for creative directors, design leaders, and AI-forward teams. Virse's soft launch included a wine happy hour at NYTechWeek and a case study with creative partner Realm Cellars.</p><p>Existing page reports 250+ RSVPs. This supports the launch story; the brand work above will carry the visual design evidence.</p></details>
+    </section>
+
+    <section id="outcomes">
+      <p class="section-no">07 / Outcomes &amp; reflection</p>
+      <h2>What we built. What I would refine next.</h2>
+      <div class="grid decision">
+        <div class="placeholder"><small>To add · Product evidence</small><h3>What changed for users</h3><p>[One documented observation, customer quote, or product measure tied to the design work.]</p></div>
+        <div class="placeholder"><small>To add · Personal reflection</small><h3>What I would improve</h3><p>[One specific unresolved interface or interaction issue, and the next experiment.]</p></div>
+      </div>
+      <p class="eyebrow" style="margin:36px 0 18px">Company context · From the existing page</p>
+      <div class="grid three">
+        <div class="mini"><p class="number">10+</p><p class="caption">Enterprise teams onboard</p></div>
+        <div class="mini"><p class="number">$2.7M</p><p class="caption">Pre-seed raised · Led by ZhenFund · April 2026</p></div>
+        <div class="mini"><p class="number">2025</p><p class="caption">Founded · New York, San Francisco &amp; Shenzhen</p></div>
+      </div>
+      <aside class="note" lang="zh-CN"><strong>公司进展与设计结果分别讲清楚</strong>上面的公司信息沿用现有页面，发布前核对时效。设计结果需要另外补证据；融资与客户数量不直接归因于某个界面改动。</aside>
+    </section>
+  </main>
+  <footer><a href="../virse.html">Compare with the current Virse page ↗</a><span>Structure draft · Bracketed fields need real project evidence</span></footer>
+  <script>
+    const toggle = document.getElementById('notes-toggle');
+    toggle.addEventListener('click', () => {
+      const hidden = document.body.classList.toggle('hide-notes');
+      toggle.textContent = hidden ? 'Show editorial notes' : 'Hide editorial notes';
+      toggle.setAttribute('aria-pressed', String(!hidden));
+    });
+  </script>
+</body>
+</html>

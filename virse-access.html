@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Inside Virse</title>
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png" />
+  <link rel="icon" type="image/svg+xml" sizes="any" href="favicon.svg?v=2" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <script>
+    try { document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark'); } catch (_) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,400;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="nav-brand.css?v=wine-1" />
+  <script src="favicon-theme.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #e8e5de; --white: #0d0d0b; --gray-1: #161614;
+      --gray-2: #282724; --gray-3: #c3bfb9; --nav-bg: rgba(13,13,11,.92);
+      --serif: 'Averia Serif Libre', serif; --sans: 'DM Sans', system-ui, sans-serif;
+      color-scheme: dark;
+    }
+    [data-theme="light"] {
+      --black: #0f0f0f; --white: #fafaf8; --gray-1: #f2f1ef;
+      --gray-2: #d4d2ce; --gray-3: #64625c; --nav-bg: rgba(250,250,248,.88);
+      color-scheme: light;
+    }
+    body { font: 16px/1.6 var(--sans); background: var(--white); color: var(--black); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-underline-offset: 4px; }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 22px 48px; background: var(--nav-bg); }
+    .nav-logo { display: flex; color: var(--black); text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+    .nav-links a { font-size: 13px; letter-spacing: .03em; color: var(--gray-3); text-decoration: none; }
+    .nav-links a:hover { color: var(--black); }
+    .theme-toggle { border: 0; background: none; color: var(--gray-3); cursor: pointer; display: flex; padding: 6px; margin-left: 8px; }
+    .theme-toggle svg { width: 15px; height: 15px; }
+    main { min-height: calc(100svh - 90px); display: grid; place-items: center; padding: 64px 24px 120px; }
+    .access { width: min(100%, 420px); }
+    .lock { width: 42px; height: 42px; border: 1px solid var(--gray-2); border-radius: 12px; display: grid; place-items: center; margin-bottom: 30px; color: var(--gray-3); }
+    h1 { font: 400 clamp(44px,8vw,60px)/1.1 var(--serif); letter-spacing: -.045em; margin-bottom: 18px; }
+    .intro { color: var(--gray-3); font-size: 15px; max-width: 340px; }
+    form { margin-top: 32px; }
+    input { display: block; width: 100%; font: 16px var(--sans); padding: 15px 16px; border: 1px solid var(--gray-2); border-radius: 8px; background: var(--gray-1); color: var(--black); }
+    input::placeholder { color: var(--gray-3); opacity: .65; }
+    .submit { width: 100%; margin-top: 14px; padding: 14px 20px; border: 1px solid var(--black); border-radius: 100px; font: 500 14px var(--sans); background: var(--black); color: var(--white); cursor: pointer; }
+    .submit:hover { opacity: .85; }
+    .submit:disabled { opacity: .5; cursor: default; }
+    :is(a, button, input):focus-visible { outline: 2px solid var(--black); outline-offset: 4px; }
+    .status { color: var(--gray-3); font-size: 13px; margin-top: 14px; }
+    .status:empty { display: none; }
+    .contact { color: var(--gray-3); font-size: 13px; margin-top: 24px; }
+    .back { display: inline-block; color: var(--gray-3); font-size: 12px; margin-top: 44px; text-decoration: none; }
+    .back:hover { color: var(--black); }
+    @media(max-width:600px) {
+      nav { padding: 18px 24px; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 12px; }
+      main { padding: 40px 24px 64px; min-height: calc(100svh - 82px); }
+    }
+  </style>
+</head>
+<body>
+  <nav aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Angela Chen — Home">
+      <svg class="nav-wine-mark" width="34" height="46" viewBox="0 0 32 48" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19.6 4.1c-2.8-.7-5.1-.4-7.2 0l.1 11.4c0 4.7-6.4 6.1-6.5 12.2l.3 14.7c0 2.1 2.4 2.6 9.5 2.4 7.4.4 10.1-.4 10-2.7l.1-14c-.1-6.6-6.6-7.8-6.6-12.6l.3-11.4" stroke-width="1.35"/>
+          <path d="m12.6 7.4 6.8-.1M10.7 31c3.4-.8 6.6-.6 10.3-.3m-10 7c3.1.5 6.5.4 9.6-.1M9.1 25.4c-.8 2.8-.6 5.2-.5 7.9" stroke-width=".8"/>
+        </g>
+      </svg>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links"><li><a href="investing.html">Investing</a></li><li><a href="about.html">About</a></li><li><a href="angelaos.html">AngelaOS</a></li></ul>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M1 12h2m18 0h2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </nav>
+  <main>
+    <div class="access">
+      <div class="lock" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg></div>
+      <h1>Inside Virse.</h1>
+      <p class="intro">A closer look at the product, the decisions, and the details.</p>
+      <!-- Placeholder only: no authentication, storage, or case-study redirect. -->
+      <form id="access-form">
+        <input id="password" type="password" aria-label="Access code" autocomplete="off" aria-describedby="access-status" required />
+        <button class="submit" type="submit" id="continue" disabled>Continue →</button>
+        <p class="status" id="access-status" role="status" aria-live="polite"></p>
+      </form>
+      <noscript><p class="status">Please contact Angela for access.</p></noscript>
+      <p class="contact">Need access? <a href="mailto:angela.design19@gmail.com?subject=Virse%20case%20study%20access">Get in touch ↗</a></p>
+      <a class="back" href="index.html#building">← Back to selected work</a>
+    </div>
+  </main>
+  <script>
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (_) {}
+    });
+    document.getElementById('access-form').addEventListener('submit', event => {
+      event.preventDefault();
+      document.getElementById('password').value = '';
+      document.getElementById('access-status').textContent = 'Access is not available yet. Please get in touch to request the case study.';
+    });
+    document.getElementById('continue').disabled = false;
+  </script>
+</body>
+</html>
