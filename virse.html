@@ -552,7 +552,6 @@
     .feature-tab {
       padding: 28px 0;
       border-top: 1px solid var(--gray-2);
-      cursor: pointer;
       position: relative;
       overflow: hidden;
     }
@@ -561,24 +560,23 @@
       border-bottom: 1px solid var(--gray-2);
     }
 
-    .feature-tab-progress {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 1px;
-      width: 0%;
-      background: var(--black);
-      transition: width linear;
-    }
-
-    .feature-tab.active .feature-tab-progress {
-      width: 100%;
-    }
-
     .feature-tab-header {
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
       display: flex;
       align-items: baseline;
       gap: 14px;
+    }
+
+    .feature-tab-header:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 6px;
     }
 
     .feature-num {
@@ -1341,39 +1339,35 @@
       <div class="feature-tabs" id="featureTabs">
 
         <div class="feature-tab active" data-index="0">
-          <div class="feature-tab-header">
+          <button class="feature-tab-header" type="button" aria-pressed="true">
             <span class="feature-num">01</span>
             <span class="feature-title">Your taste, encoded</span>
-          </div>
+          </button>
           <p class="feature-desc">I built Virse to learn a designer's visual language. The platform encodes aesthetic judgment, so every output reflects your taste.</p>
-          <div class="feature-tab-progress" id="progress-0"></div>
         </div>
 
         <div class="feature-tab" data-index="1">
-          <div class="feature-tab-header">
+          <button class="feature-tab-header" type="button" aria-pressed="false">
             <span class="feature-num">02</span>
             <span class="feature-title">50+ models, one canvas</span>
-          </div>
+          </button>
           <p class="feature-desc">Without switching tools, your workflow stays fluid, your output stays consistent in one place.</p>
-          <div class="feature-tab-progress" id="progress-1"></div>
         </div>
 
         <div class="feature-tab" data-index="2">
-          <div class="feature-tab-header">
+          <button class="feature-tab-header" type="button" aria-pressed="false">
             <span class="feature-num">03</span>
             <span class="feature-title">Search with taste</span>
-          </div>
+          </button>
           <p class="feature-desc">Find assets by feel, not filename — by mood, or studio-tailored preference — and surface exactly what you're looking for.</p>
-          <div class="feature-tab-progress" id="progress-2"></div>
         </div>
 
         <div class="feature-tab" data-index="3">
-          <div class="feature-tab-header">
+          <button class="feature-tab-header" type="button" aria-pressed="false">
             <span class="feature-num">04</span>
             <span class="feature-title">Your team, one standard</span>
-          </div>
+          </button>
           <p class="feature-desc">Design quality doesn't scale through documentation. I built Virse so teams share a live visual standard — stays on-brand as you grow.</p>
-          <div class="feature-tab-progress" id="progress-3"></div>
         </div>
 
       </div>
@@ -1382,19 +1376,19 @@
       <div class="feature-preview-panel">
 
         <div class="feature-preview-slide active" data-index="0">
-          <video src="Website-Personalize.webm" autoplay loop muted playsinline></video>
+          <video src="Website-Personalize.webm" preload="auto" muted playsinline></video>
         </div>
 
         <div class="feature-preview-slide" data-index="1">
-          <video src="Website-Create-Mode.webm" loop muted playsinline></video>
+          <video src="Website-Create-Mode.webm" preload="auto" muted playsinline></video>
         </div>
 
         <div class="feature-preview-slide" data-index="2">
-          <video src="Search-Mode.webm" loop muted playsinline></video>
+          <video src="Search-Mode.webm" preload="auto" muted playsinline></video>
         </div>
 
         <div class="feature-preview-slide" data-index="3">
-          <video src="Website-Manage-Your-Idea.webm" loop muted playsinline></video>
+          <video src="Website-Manage-Your-Idea.webm" preload="auto" muted playsinline></video>
         </div>
 
       </div>
@@ -1706,77 +1700,31 @@
       nav.classList.toggle('scrolled', window.scrollY > 20);
     });
 
-    // ── Feature switcher ──
-    const DURATION = 4000; // ms per feature
+    // ── Feature switcher: play only when a feature name is clicked ──
     const tabs = document.querySelectorAll('.feature-tab');
     const slides = document.querySelectorAll('.feature-preview-slide');
-    let current = 0;
-    let timer = null;
-    let progressTimer = null;
 
-    function goTo(index, resetProgress = true) {
-      // Deactivate all
-      tabs.forEach(t => t.classList.remove('active'));
-      slides.forEach(s => s.classList.remove('active'));
+    function playFeature(index) {
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+        tab.querySelector('button').setAttribute('aria-pressed', String(i === index));
+      });
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+        const video = slide.querySelector('video');
+        if (video) video.pause();
+      });
 
-      // Clear any running progress bar
-      if (resetProgress) clearProgress();
-
-      // Activate target
-      tabs[index].classList.add('active');
-      slides[index].classList.add('active');
-
-      // Play video in the slide if present
       const video = slides[index].querySelector('video');
-      if (video && video.src) { video.currentTime = 0; video.play(); }
-
-      current = index;
-
-      // Animate progress bar
-      const bar = document.getElementById('progress-' + index);
-      bar.style.transition = 'none';
-      bar.style.width = '0%';
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          bar.style.transition = 'width ' + DURATION + 'ms linear';
-          bar.style.width = '100%';
-        });
-      });
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      }
     }
 
-    function clearProgress() {
-      document.querySelectorAll('.feature-tab-progress').forEach(b => {
-        b.style.transition = 'none';
-        b.style.width = '0%';
-      });
-    }
-
-    function startAuto() {
-      clearInterval(timer);
-      timer = setInterval(() => {
-        goTo((current + 1) % tabs.length);
-      }, DURATION);
-    }
-
-    // Click to switch
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const idx = parseInt(tab.dataset.index);
-        if (idx === current) return;
-        clearInterval(timer);
-        goTo(idx);
-        startAuto();
-      });
+    tabs.forEach((tab, index) => {
+      tab.querySelector('button').addEventListener('click', () => playFeature(index));
     });
-
-    // Pause on hover
-    const switcher = document.querySelector('.feature-switcher');
-    switcher.addEventListener('mouseenter', () => clearInterval(timer));
-    switcher.addEventListener('mouseleave', () => startAuto());
-
-    // Kick off
-    goTo(0);
-    startAuto();
 
   </script>
 
