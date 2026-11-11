@@ -3,7 +3,7 @@ import { OrbitControls } from './vendor/OrbitControls.js';
 import { RoundedBoxGeometry } from './vendor/RoundedBoxGeometry.js';
 import { RoomEnvironment } from './vendor/RoomEnvironment.js';
 import { createArtistBottle } from './artist-bottles.js';
-import { createGalleryLabel, galleryCollections } from './gallery-labels.js?v=averia-1';
+import { createGalleryLabel, galleryCollections } from './gallery-labels.js?v=averia-3';
 import { createCellarAudio } from './cellar-audio.js?v=2';
 
 const $ = id => document.getElementById(id);
