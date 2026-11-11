@@ -28,5 +28,5 @@ export function createGalleryLabel({ lines, collection, number }) {
 
 export const galleryCollections=[
   {collection:'build',labels:[['Product','Strategy'],['GTM &','Narrative'],['Founder','Instinct'],['AI','Fluency']]},
-  {collection:'back',labels:[['AI Infra'],['Healthcare/Biotech'],['Creativity'],['Construction','Tech']]}
+  {collection:'back',labels:[['AI Infra'],['Healthcare/Biotech'],['Creativity'],['Construction']]}
 ];

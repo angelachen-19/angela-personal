@@ -15,7 +15,7 @@ The scene contains exactly four objects per row:
 
 - **build**: product strategy; gtm & narrative; founder instinct; AI fluency.
 - **shape**: four procedural art bottles modeled after the user-supplied reference: Dalí (melted amber bottle with a drooping neck), Munch (wavy glass and flowing warm streaks), Picasso (angular stained-glass facets), Mondrian (rectangular leaded primary-color glass). Each includes a bottle neck and cork. Geometry lives in `artist-bottles.js`.
-- **invest**: ai infra; healthcare/biotech; creativity; construction tech.
+- **invest**: ai infra; healthcare/biotech; creativity; construction.
 
 Click **build**, **shape**, or **invest** in the homepage introduction to illuminate and extend the matching shelf (invest maps to the bottom row; its internal collection key remains `back`). Click the word again to retract it and dim the lights. The rail itself is also clickable in both previews.
 
